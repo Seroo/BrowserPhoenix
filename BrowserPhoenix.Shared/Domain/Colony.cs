@@ -1,0 +1,151 @@
+﻿using PetaPoco;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace BrowserPhoenix.Shared.Domain
+{
+    [Serializable]
+    [TableName("colony")]
+    [PrimaryKey("id")]
+    public class Colony
+    {
+        [Column("id")]
+        public Int64 Id { get; set; }
+        [Column("name")]
+        public String Name { get; set; }
+        [Column("create_date")]
+        public DateTime CreateDate { get; set; }
+        [Column("x_cord")]
+        public Int32 XCord { get; set; }
+        [Column("y_cord")]
+        public Int32 YCord { get; set; }
+
+        [Column("player_id")]
+        public Int64 PlayerId { get; set; }
+
+        [Ignore]
+        [Column("player_id")]
+        public Player Player { get; set; }
+
+        [Column("resource_id")]
+        public Int64 ResourceId { get; set; }
+
+        [Ignore]
+        [Column("resource_id")]
+        public ColonyResource Resources { get; set; }
+
+        public static String JoinPlayer()
+        {
+            return " LEFT JOIN player ON colony.player_id = player.id ";
+        }
+
+        public static String JoinResources()
+        {
+            return " LEFT JOIN colony_resource ON colony.resource_id = colony_resource.id ";
+        }
+
+        public Boolean IsOwnedByCurrentPlayer()
+        {
+            return this.PlayerId == Player.Current.Id;
+        }
+
+        public static Colony GetById(Database db, Int64 id)
+        {
+            var colonyList = db.Fetch<Colony, Player, ColonyResource>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Colony")
+
+                    .Append(Colony.JoinPlayer())
+                    .Append(Colony.JoinResources())
+                    .Append("WHERE colony.id =@0 ", id)
+                    );
+
+            var colony = colonyList.First();
+
+            return colony;
+        }
+
+        public static Colony GetPlayersFirst(Database db, Int64 playerId)
+        {
+            var colony = db.Fetch<Colony, Player, ColonyResource>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Colony")
+                    .Append(Colony.JoinPlayer())
+                    .Append(Colony.JoinResources())
+                    .Append("WHERE player.id =@0 ", playerId)
+                    .Append(" order by colony.create_date asc")
+                    .Append("limit 1")
+                    )
+                    .FirstOrDefault();
+
+          
+            return colony;
+        }
+
+        public static IEnumerable<Colony> GetByPlayerId(Database db, Int64 playerId)
+        {
+            return db.Fetch<Colony, Player, ColonyResource>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Colony")
+                    .Append(Colony.JoinPlayer())
+                    .Append(Colony.JoinResources())
+                    .Append("WHERE player.id =@0 ", playerId)
+                    );
+        }
+
+        public static Colony Create(Database portal, Int64 playerId, Int32 xCord, Int32 yCord)
+        {
+            var result = new Colony();
+            
+            result.PlayerId = playerId;
+            result.XCord = xCord;
+            result.YCord = yCord;
+            result.CreateDate = DateTime.Now;
+            
+
+            var resources = ColonyResource.Create(portal);
+
+            result.ResourceId = resources.Id;
+
+            portal.Save(result);
+
+            return result;
+        }
+
+        public void UpdateResources(Database db, DateTime timeOfHappening)
+        {
+            this.Resources.RecalculateResources(db, timeOfHappening);
+        }
+        
+        public void UpdateResourceProduction(Database db, DateTime timeOfHappening)
+        {
+            var buildings = Building.GetByColonyId(db, this.Id);
+
+            var resourceBuildings = buildings.Where(x => x.IsResourceBuilding());
+
+            this.Resources.RecalculateResourceProduction(db, timeOfHappening, resourceBuildings);
+        }
+
+        public Boolean CheckResourcesAvailable(Int64 buildingId)
+        {
+            using (var db = DatabasePortal.Open())
+            {
+                var building = Building.GetById(db, buildingId);
+
+                var costs = BuildingHelper.GetBuildCost(building.Type, building.Level + 1);
+
+                return this.Resources.CheckAvailable(costs);
+            }
+        }
+
+        public void RemoveResources(Database db, ResourceCollection resources)
+        {
+            var colonyResources = ColonyResource.GetById(db, this.ResourceId);
+
+            colonyResources.RemoveResources(db, resources);
+        }
+    }
+
+}

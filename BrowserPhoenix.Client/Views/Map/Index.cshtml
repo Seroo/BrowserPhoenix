@@ -1,0 +1,116 @@
+﻿@model MapModel
+
+<style>
+    
+    .colony {background-image: url("/Content/Images/anthill.png"); width:70px; height:70px; background-size: 100% 100%}
+
+    #map_left {
+        float: left;
+
+    }
+    #map_right {
+        float: right;
+    }
+    #map_up {
+        float: left;
+    }
+    #map_down {
+        float: left;
+    }
+</style>
+<div id="x_cord" style="display:none;"></div>
+<div id="y_cord" style="display:none;"></div>
+<div id="selected_colony" style="display:none;"></div>
+<div id="map">
+    
+        @for (var yCord = Model.YStart; yCord < Model.YStart + Map.YRange; yCord++)
+        {
+            <div class="map_y">
+                @for (var xCord = Model.XStart; xCord < Model.XStart + Map.XRange; xCord++)
+                {
+                    var colony = Model.Colonies.FirstOrDefault(x => x.XCord == xCord && x.YCord == yCord);
+                    var hasColony = colony != null;
+
+                    var context = "empty";
+                    if(hasColony)
+                    {
+                        if(colony.Player.Id == Player.Current.Id)
+                        {
+                            context = "owned";
+                        }
+                        //else if is in alliance stuff
+                        else
+                        {
+                            context = "enemy";
+                        }
+                    }
+                    //check if has a colony in build or something like this
+
+                    <div colony_id="@(hasColony ? colony.Id.ToString() : "0")" context="@context" x_cord="@xCord" y_cord="@yCord" class="cell @(hasColony && colony.IsOwnedByCurrentPlayer() ? "owned" : "")" onclick="activateCell(this)">
+                        @if (hasColony)
+                        {
+                            <div  class="colony" title="@colony.Player.Username - @colony.Name">
+                                @colony.Name
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        <div style="clear:left"></div>
+        }
+    
+</div>
+
+@section ContextMenu{
+    <div id="context-enemy" class="partial-context-menu">
+        <a>Attack</a><br />
+    </div>
+    <div id="context-owned" class="partial-context-menu">
+        <a onclick="gotoColony()">Goto</a>
+    </div>
+    <div id="context-empty" class="partial-context-menu">
+        <a onclick="createColony()">Create Colony</a><br />
+    </div>
+   
+}
+
+<script>
+    function activateCell(sender)
+    {
+        var wasActive = $(sender).hasClass("active");
+        $(".cell").removeClass("active");
+        
+        if (!wasActive)
+        {
+            //activate contextmenu
+
+            var context = $(sender).attr("context");
+            
+            changeContextMenu(context);
+
+            $("#x_cord").html($(sender).attr("x_cord"));
+            $("#y_cord").html($(sender).attr("y_cord"));
+            $("#selected_colony").html($(sender).attr("colony_id"));
+            $(sender).addClass("active");
+        }
+        else
+        {
+            //deactivate contenxtMenus
+        }
+    }
+
+
+    function gotoColony()
+    {
+        var id = $("#selected_colony").html();
+        location.href = "/colony/index/" + id;
+    }
+
+    function createColony()
+    {
+        var x = $("#x_cord").html();
+        var y = $("#y_cord").html();
+
+        $.get("/colony/create?x=" + x + "&y=" + y);
+    }
+</script>

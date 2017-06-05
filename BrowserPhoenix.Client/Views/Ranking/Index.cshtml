@@ -1,0 +1,24 @@
+﻿@model List<Tuple<Int64, String, Int64>>
+
+Ranking:
+
+<br /><br />
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Score</th>
+    </tr>
+
+    @foreach (var player in Model)
+    {
+        <tr>
+            <td>
+                <a href="/ranking/updatepoints/@player.Item1">@player.Item2</a>
+            </td>
+            <td>
+                @player.Item3
+            </td>
+        </tr>
+    }
+</table>

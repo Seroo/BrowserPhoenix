@@ -1,0 +1,32 @@
+﻿@MainMenuLink("Übersicht", "/home")
+<br />
+@MainMenuLink("Karte", "/map")
+<br />
+@MainMenuLink("Kolonie", "/colony")
+<br />
+@MainMenuLink("Berichte", "/report")
+<br />
+@MainMenuLink("KOLLEKTIV", "/nowhere")
+<br />
+@MainMenuLink("K Forum", "/nowhere")
+<br />
+@MainMenuLink("Forschung", "/research")
+<br />
+@MainMenuLink("Handel", "/trade")
+<br />
+@MainMenuLink("HighScore", "/ranking")
+<br />
+@MainMenuLink("Forum", "/forum")
+<br />
+@MainMenuLink("Profil", "/profil")
+<br />
+@MainMenuLink("Einstellungen", "/setting")
+<br />
+
+@helper MainMenuLink(String text, String url)
+{
+    var requestedUrl = Request.Url.AbsolutePath.ToLower();
+
+    var isActive = requestedUrl.Contains(url);
+    <a href="@url" class="main-menu-link @(isActive ? "active" : "")" >@text</a>
+}

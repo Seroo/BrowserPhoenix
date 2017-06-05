@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIENT</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("CLIENT " + BrowserPhoenix.Shared.Domain.Player.Current.Username, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("HeaderNav")
+
+                <div style="float:right">
+                    @if (Player.Current.IsAnonymous)
+                    {
+                        @Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @if (!Player.Current.IsAnonymous)
+        {
+            <div id="top-menu">
+                @Html.Partial("TopMenu")
+            </div>
+        }
+        
+        <div id="main-menu">
+            @Html.Partial("MainMenu")
+        </div>
+        
+        <div id="content" style="float:left;">
+            @RenderBody()
+        </div>
+        <div id="context-menu">
+            @RenderSection("ContextMenu", false)
+        </div>
+
+
+
+        @Html.Partial("Footer")
+        </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+<script>
+    function changeContextMenu(context) {
+        $('.partial-context-menu').hide();
+        $('#context-' + context).show();
+
+    }
+
+    function startTimer(duration, display) {
+        var start = Date.now(),
+            diff,
+            minutes,
+            seconds,
+            hours;
+        function timer() {
+            // get the number of seconds that have elapsed since 
+            // startTimer() was called
+            diff = duration - (((Date.now() - start) / 1000) | 0);
+
+            // does the same job as parseInt truncates the float
+            hours = (diff / 60 / 60) | 0;
+            minutes = (diff / 60 % 60) | 0;
+            seconds = (diff % 60) | 0;
+
+
+            
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            //display.html(minutes + ":" + seconds);
+            display.html(hours + ":" + minutes + ":" + seconds);
+
+            if (diff <= 0) {
+                // add one second so that the count down starts at the full duration
+                // example 05:00 not 04:59
+                start = Date.now() + 1000;
+            }
+        };
+        // we don't want to wait a full second before the timer starts
+        timer();
+        setInterval(timer, 1000);
+    }
+
+  
+
+</script>
+
+</html>
+

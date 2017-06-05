@@ -1,0 +1,29 @@
+﻿@MainMenuLink("Overview", "Index", "Home")
+<br />
+@MainMenuLink("Map", "Index", "Map")
+<br />
+@MainMenuLink("Colony", "Index", "Colony")
+<br />
+@MainMenuLink("Reports", "Index", "Report")
+<br />
+@MainMenuLink("SWARM", "Index", "")
+<br />
+@MainMenuLink("SWARM Forum", "Index", "")
+<br />
+@MainMenuLink("Research", "Index", "Research")
+<br />
+@MainMenuLink("Trade", "Index", "Trade")
+<br />
+@MainMenuLink("HighScore", "Index", "Ranking")
+<br />
+@MainMenuLink("Forum", "Index", "Forum")
+<br />
+@MainMenuLink("Profil", "Index", "Profil")
+<br />
+@MainMenuLink("Settings", "Index", "Setting")
+<br />
+
+@helper MainMenuLink(String text, String controller, String action)
+{
+    @Html.ActionLink(text, controller, action)
+}

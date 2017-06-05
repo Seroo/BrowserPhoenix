@@ -1,0 +1,122 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+body {
+    background-color: black;
+}
+
+.body-content {
+    background-color: lightgrey;
+    padding: 10px;
+    width: 1200px;
+    max-width:1200px;
+}
+
+#main-menu {
+    width: 180px;
+    float: left;
+    padding: 20px;
+    background-color: lightgray;
+    border-radius: 15px;
+    border: 4px groove;
+    border-color: red;
+    margin-right:10px;
+}
+
+#main-menu a {
+    font-size: 20px;
+
+}
+
+#context-menu {
+    width: 180px;
+    float: left;
+    padding: 20px;
+    background-color: lightgray;
+    border-radius: 15px;
+    border: 4px groove;
+    border-color: red;
+    margin-left:10px;
+}
+
+#content {
+    padding: 20px;
+    min-height: 800px;
+    min-width: 800px;
+    border-radius: 15px;
+    border: 4px groove;
+}
+
+.h2 {
+    font-size: 30px;
+}
+
+#top-menu {
+    border-radius: 15px;
+    border: 4px groove;
+    margin-bottom:10px;
+}
+
+.main-menu-link {
+    text-decoration:none;
+    cursor: pointer;
+    color:black;
+}
+
+.main-menu-link:hover {
+    text-decoration: none;
+}
+
+.main-menu-link.active {
+    color: red;
+}
+
+.cell {
+    height: 70px;
+    width: 70px;
+    padding: 1px;
+    float: left;
+    cursor: pointer
+}
+
+.cell.active {
+    width:68;
+    height:68;
+    border: 1px solid red;
+    padding: 0px;
+}
+
+.cell.owned {
+    background-color: green;
+}
+
+.cell:hover {
+    border: 1px solid red;
+}
+
+.partial-context-menu {
+    display: none;
+    font-size: 20px;
+}
