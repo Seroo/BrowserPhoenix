@@ -84,11 +84,8 @@ namespace BrowserPhoenix.Shared.Domain
             result.XCord = xCord;
             result.YCord = yCord;
             result.Type = type;
-
-            var buildTime = BuildingHelper.GetBuildTime(type, 1);
-
-            var endDate = createDate.Add(buildTime);
-            result.CreateDate = endDate;
+            
+            result.CreateDate = createDate;
 
             result.Level = 0;
 
@@ -113,9 +110,10 @@ namespace BrowserPhoenix.Shared.Domain
         {
             return Type == BuildingType.MushroomFarm 
                 || Type == BuildingType.Sandpit 
-                || Type == BuildingType.BroodLair
+                || Type == BuildingType.QueenLair
                 || Type == BuildingType.Garden
-                || Type == BuildingType.AphidsBreed;
+                || Type == BuildingType.AphidsBreed
+                || Type == BuildingType.BeetleBreed;
         }
 
         public Boolean HasTimer()

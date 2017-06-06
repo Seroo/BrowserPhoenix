@@ -3,6 +3,7 @@
 <style>
     .b-MushroomFarm {background: url("/Content/Images/mushroom_farm.png") no-repeat no-repeat; width:70px; height:70px;}
     .no-building {background: url("/Content/Images/no_building.png")}
+    .countdown{color:white;}
 </style>
 
 <div id="x_cord" style="display:none;"></div>
@@ -58,8 +59,10 @@
         <a onclick="createBuilding('@BuildingType.MushroomFarm')">Mushroom Farm</a><br />
         <a onclick="createBuilding('@BuildingType.Garden')">Garden</a><br />
         <a onclick="createBuilding('@BuildingType.AphidsBreed')">AphidsBreed</a><br />
-        <a onclick="createBuilding('@BuildingType.Rampart')">Rampart</a><br />
-        <a onclick="createBuilding('@BuildingType.Trench')">Trench</a><br />
+        <a onclick="createBuilding('@BuildingType.BeetleBreed')">BeetleBreed</a><br />
+        <a onclick="createBuilding('@BuildingType.GraveYard')">GraveYard</a><br />
+        <a onclick="createBuilding('@BuildingType.ResearchHill')">ResearchHill</a><br />
+        <a onclick="createBuilding('@BuildingType.TroopPool')">TroopPool</a><br />
     </div>
     
     <div id="context-QueenLair" class="partial-context-menu">
@@ -86,10 +89,16 @@
     <div id="context-AphidsBreed" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Rampart" class="partial-context-menu">
+    <div id="context-BeetleBreed" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Trench" class="partial-context-menu">
+    <div id="context-GraveYard" class="partial-context-menu">
+        <a onclick="levelUpBuilding()">Level Up</a><br />
+    </div>
+    <div id="context-ResearchHill" class="partial-context-menu">
+        <a onclick="levelUpBuilding()">Level Up</a><br />
+    </div>
+    <div id="context-TroopPool" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
     

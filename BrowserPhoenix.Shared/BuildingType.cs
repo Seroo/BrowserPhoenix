@@ -22,7 +22,16 @@ namespace BrowserPhoenix.Shared
         Garden = 70,
         [Description("Aphids Breed")]
         AphidsBreed = 80,
-        Rampart = 90,
-        Trench = 100
+     //   Rampart = 90,
+   //     Trench = 100,
+        [Description("Research Hill")]
+        ResearchHill = 110,
+        GraveYard = 120,
+        [Description("Beetles Breed")]
+        BeetleBreed = 130,
+        [Description("Troop Pool")]
+        TroopPool = 140,
+        Tower = 150
+
     }
 }

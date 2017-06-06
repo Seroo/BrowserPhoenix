@@ -16,11 +16,24 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
         public void Process()
         {
-            using (var portal = DatabasePortal.Open())
+            using (var db = DatabasePortal.Open())
             {
                 //check if field is available
 
-                Building.Create(portal, this.CreateDate, ColonyId, Type, XCord, YCord);
+                var building = Building.Create(db, this.CreateDate, ColonyId, Type, XCord, YCord);
+
+                building = Building.GetById(db, building.Id);
+
+
+                var buildTime = BuildingHelper.GetBuildTime(building.Type, building.Level + 1);
+
+                var costs = BuildingHelper.GetBuildCost(building.Type, building.Level + 1);
+
+                building.Colony.RemoveResources(db, costs);
+
+                var endDate = CreateDate.Add(buildTime);
+
+                Timer.Create(db, PlayerId, TimerType.LevelUpBuilding, RefType.Building, building.Id, endDate);
             }
         }
     }

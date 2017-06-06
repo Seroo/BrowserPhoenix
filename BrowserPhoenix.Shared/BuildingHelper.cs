@@ -10,143 +10,163 @@ namespace BrowserPhoenix.Shared
     {
         public static TimeSpan GetBuildTime(BuildingType type, Int32 level)
         {
-            double multiplikator = 1;
-
-            switch(type)
+            switch (type)
             {
-                case BuildingType.MushroomFarm:
-                    multiplikator = 1.2;
-                    break;
-
                 case BuildingType.Sandpit:
-                    multiplikator = 1.2;
-                    break;
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
+
+                case BuildingType.MushroomFarm:
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
+
+                case BuildingType.BeetleBreed:
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
 
                 case BuildingType.Garden:
-                    multiplikator = 1.2;
-                    break;
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
+
+                case BuildingType.AphidsBreed:
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
+
+                case BuildingType.BroodLair:
+                    return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
+
+                case BuildingType.ResearchHill:
+                    return TimeSpan.FromSeconds(90 * GetMultiplikator(level, 1.6f));
+
+                case BuildingType.GraveYard:
+                    return TimeSpan.FromSeconds(1200);
+
+                case BuildingType.TroopPool:
+                    return TimeSpan.FromSeconds(60 * GetMultiplikator(level, 1.5f));
 
                 case BuildingType.Stock:
-                    multiplikator = 1.8;
-                    break;
+                    return TimeSpan.FromSeconds(40 * GetMultiplikator(level, 1.8f));
 
                 case BuildingType.Warehouse:
-                    multiplikator = 1.8;
-                    break;
+                    return TimeSpan.FromSeconds(40 * GetMultiplikator(level, 1.8f));
 
                 case BuildingType.QueenLair:
-                    multiplikator = 5;
-                    break;
+                    return TimeSpan.FromSeconds(120 * GetMultiplikator(level, 1.6f));
 
-                case BuildingType.Trench:
-                    multiplikator = 2.4;
-                    break;
-
-                case BuildingType.Rampart:
-                    multiplikator = 2.4;
-                    break;
+                case BuildingType.Tower:
+                    return TimeSpan.FromSeconds(3600);
 
                 default:
-                    multiplikator = 1;
-                    break;
+                    return TimeSpan.FromHours(72);
             }
+      
+        }
 
-            var seconds = 0;
-            switch(level)
+        public static float GetMultiplikator(Int32 level, float percentage)
+        {
+            if (level == 1)
+                return 1f;
+            var count = 0;
+            var multiplikator = 1f;
+            while (count++ < level)
             {
-                case 1:
-                    seconds = 60;
-                    break;
-
-                case 2:
-                    seconds = 150;
-                    break;
-
-                case 3:
-                    seconds = 350;
-                    break;
-
-                case 4:
-                    seconds = 1000;
-                    break;
-
-                case 5:
-                    seconds = 2200;
-                    break;
-
-                case 6:
-                    seconds = 5000;
-                    break;
-
+                multiplikator = multiplikator * percentage;
             }
-
-            return TimeSpan.FromSeconds(seconds * multiplikator);
+            return multiplikator;
         }
 
         public static ResourceCollection GetBuildCost(BuildingType type, Int32 level)
         {
             var result = new ResourceCollection();
 
-            double multiplikator = 1;
-            if (level < 5)
-            {
-                multiplikator = 1;
-            }
-            else if(level < 10)
-            {
-                multiplikator = 1.5;
-            }
-            else if(level < 15)
-            {
-                multiplikator = 2.5;
-            }
-            else if(level < 20)
-            {
-                multiplikator = 4;
-            }
-            else
-            {
-                multiplikator = 8;
-            }
 
             switch (type)
             {
-                case BuildingType.MushroomFarm:
-                    result.Food = (float)15 * (float)multiplikator;
-                    result.Sand = (float)10 * (float)multiplikator;
-                    result.Leave = (float)10 * (float)multiplikator;
+                case BuildingType.Sandpit:
+                    result.Sand = (float)10 * (float)GetMultiplikator(level, 1.2f);
+                    result.Leave = (float)15 * (float)GetMultiplikator(level, 1.2f);
+                    result.Chitin = (float)5 * (float)GetMultiplikator(level, 1.2f);
+                    result.Larvae = (float)2 * 1f;
                     break;
 
-                case BuildingType.Sandpit:
-                    result.Sand = (float)15 * (float)multiplikator;
-                    result.Leave = (float)5 * (float)multiplikator;
+                case BuildingType.MushroomFarm:
+                    result.Sand = (float)10 * (float)GetMultiplikator(level, 1.2f);
+                    result.Leave = (float)10 * (float)GetMultiplikator(level, 1.2f);
+                    result.Chitin = (float)3 * (float)GetMultiplikator(level, 1.2f);
+                    result.Larvae = (float)3 * 1f;
+                    break;
+
+                case BuildingType.BeetleBreed:
+                    result.Sand = (float)15 * (float)GetMultiplikator(level, 1.2f);
+                    result.Leave = (float)15 * (float)GetMultiplikator(level, 1.2f);
+                    result.Chitin = (float)8 * (float)GetMultiplikator(level, 1.2f);
+                    result.Larvae = (float)3 * 1f;
                     break;
 
                 case BuildingType.Garden:
-                    result.Sand = (float)5 * (float)multiplikator;
-                    result.Leave = (float)15 * (float)multiplikator;
+                    result.Sand = (float)15 * (float)GetMultiplikator(level, 1.2f);
+                    result.Leave = (float)10 * (float)GetMultiplikator(level, 1.2f);
+                    result.Chitin = (float)5 * (float)GetMultiplikator(level, 1.2f);
+                    result.Larvae = (float)2 * 1f;
+                    break;
+
+                case BuildingType.AphidsBreed:
+                    result.Sand = (float)10 * (float)GetMultiplikator(level, 1.3f);
+                    result.Leave = (float)12 * (float)GetMultiplikator(level, 1.3f);
+                    result.Chitin = (float)2 * (float)GetMultiplikator(level, 1.3f);
+                    result.Larvae = (float)4 * (float)1f;
+                    break;
+
+                case BuildingType.BroodLair:
+                    result.Sand = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)2 * (float)1f;
+                    break;
+
+                case BuildingType.ResearchHill:
+                    result.Sand = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)50 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)5 * (float)GetMultiplikator(level, 1.25f);
+                    break;
+
+                case BuildingType.GraveYard:
+                    result.Sand = (float)500 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)500 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)50 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)5 * (float)GetMultiplikator(level, 1.25f);
+                    break;
+
+                case BuildingType.TroopPool:
+                    result.Sand = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)100 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)2 * (float)1f;
                     break;
 
                 case BuildingType.Stock:
-                    
+                    result.Sand = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)5 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)1 * (float)1f;
                     break;
 
                 case BuildingType.Warehouse:
-                    
+                    result.Sand = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Leave = (float)20 * (float)GetMultiplikator(level, 1.25f);
+                    result.Chitin = (float)5 * (float)GetMultiplikator(level, 1.25f);
+                    result.Larvae = (float)1 * (float)1f;
                     break;
 
                 case BuildingType.QueenLair:
-                   
+                    result.Sand = (float)150 * (float)GetMultiplikator(level, 1.3f);
+                    result.Leave = (float)150 * (float)GetMultiplikator(level, 1.3f);
+                    result.Chitin = (float)50 * (float)GetMultiplikator(level, 1.3f);
+                    result.Larvae = (float)5 * (float)1f;
                     break;
 
-                case BuildingType.Trench:
-                    
+                case BuildingType.Tower:
+                    result.Sand = (float)300;
+                    result.Leave = (float)300;
+                    result.Chitin = (float)100;
+                    result.Larvae = (float)15;
                     break;
-
-                case BuildingType.Rampart:
-                   
-                    break;
-
             }
 
             return result;
@@ -159,57 +179,28 @@ namespace BrowserPhoenix.Shared
 
             switch (building.Type)
             {
-                case BuildingType.MushroomFarm:
-                    multiplikator = 1;
-                    break;
+                case BuildingType.AphidsBreed:
+                    return 20 * (float)GetMultiplikator(building.Level, 1.5f);
 
                 case BuildingType.Sandpit:
-                    multiplikator = 1;
-                    break;
+                    return 20 * (float)GetMultiplikator(building.Level, 1.5f);
 
                 case BuildingType.Garden:
-                    multiplikator = 1;
-                    break;
+                    return 20 * (float)GetMultiplikator(building.Level, 1.5f);
 
-                case BuildingType.BroodLair:
-                    multiplikator = 0.1;
-                    break;
-                    
+                case BuildingType.MushroomFarm:
+                    return 20 * (float)GetMultiplikator(building.Level, 1.5f);
+
+                case BuildingType.BeetleBreed:
+                    return 15 * (float)GetMultiplikator(building.Level, 1.5f);
+
+                case BuildingType.QueenLair:
+                    return 10 * (float)GetMultiplikator(building.Level, 1.5f);
+
                 default:
-                    multiplikator = 1;
-                    break;
+                    return 0;
             }
-
-            var production = building.Level * 10;
-            switch (building.Level)
-            {
-                case 1:
-                    production = 10;
-                    break;
-
-                case 2:
-                    production = 20;
-                    break;
-
-                case 3:
-                    production = 30;
-                    break;
-
-                case 4:
-                    production = 40;
-                    break;
-
-                case 5:
-                    production = 50;
-                    break;
-
-                case 6:
-                    production = 60;
-                    break;
-
-            }
-
-            return (float)production * (float)multiplikator;
+            
         }
 
         public static Int32 GetMaxLevel(BuildingType type)
