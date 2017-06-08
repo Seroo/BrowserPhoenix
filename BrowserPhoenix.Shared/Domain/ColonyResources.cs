@@ -134,7 +134,7 @@ namespace BrowserPhoenix.Shared.Domain
                         LeaveProduction += BuildingHelper.GetProduction(building);
                         break;
 
-                    case BuildingType.AphidsBreed:
+                    case BuildingType.AphidBreed:
                         SugarProduction += BuildingHelper.GetProduction(building);
                         break;
                 }
@@ -180,6 +180,45 @@ namespace BrowserPhoenix.Shared.Domain
             this.Food -= resources.Food;
 
             db.Save(this);
+        }
+
+        public float GetProductionPerTenSeconds(ResourceType type)
+        {
+            switch(type)
+            {
+                case ResourceType.Chitin:
+                    if (ChitinProduction == 0)
+                        return 0;
+
+                    return ChitinProduction / 360;
+                case ResourceType.Food:
+                    if (FoodProduction == 0)
+                        return 0;
+
+                    return FoodProduction / 360;
+                case ResourceType.Larvae:
+                    if (LarvaeProduction == 0)
+                        return 0;
+
+                    return LarvaeProduction / 360;
+                case ResourceType.Leave:
+                    if (LeaveProduction == 0)
+                        return 0;
+
+                    return LeaveProduction / 360;
+                case ResourceType.Sand:
+                    if (SandProduction == 0)
+                        return 0;
+
+                    return SandProduction / 360;
+                case ResourceType.Sugar:
+                    if (SugarProduction == 0)
+                        return 0;
+
+                    return SugarProduction / 360;
+                default:
+                    return 0;
+            }
         }
     }
 

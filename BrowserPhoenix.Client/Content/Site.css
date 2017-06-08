@@ -120,3 +120,12 @@ body {
     display: none;
     font-size: 20px;
 }
+
+.glyph-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.building-icon, .level-icon {
+    float: left;
+}

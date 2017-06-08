@@ -18,6 +18,7 @@ namespace BrowserPhoenix.Controllers
     {
         // GET: Colony
 
+        [Authorize]
         public ActionResult Index(Int64? id)
         {
             using (var db = DatabasePortal.Open())

@@ -1,4 +1,6 @@
-﻿using PetaPoco;
+﻿using BrowserPhoenix.Shared.Commands;
+using BrowserPhoenix.Shared.Commands.Sync;
+using PetaPoco;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,9 +78,12 @@ namespace BrowserPhoenix.Shared.Domain
                 }
                 else
                 {
-                    
+                    //experimentel
                     if (_lastColonyUpdate.AddSeconds(5) < DateTime.Now)
                     {
+
+                        var command = new RecalculateResourcesCommand(_colony.Id, DateTime.Now);
+                        CommandPortal.Send(command);
                         using (var db = DatabasePortal.Open())
                         {
                             _colony = Colony.GetById(db, _colony.Id);

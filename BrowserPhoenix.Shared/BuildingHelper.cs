@@ -24,7 +24,7 @@ namespace BrowserPhoenix.Shared
                 case BuildingType.Garden:
                     return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
 
-                case BuildingType.AphidsBreed:
+                case BuildingType.AphidBreed:
                     return TimeSpan.FromSeconds(30 * GetMultiplikator(level, 1.8f));
 
                 case BuildingType.BroodLair:
@@ -105,7 +105,7 @@ namespace BrowserPhoenix.Shared
                     result.Larvae = (float)2 * 1f;
                     break;
 
-                case BuildingType.AphidsBreed:
+                case BuildingType.AphidBreed:
                     result.Sand = (float)10 * (float)GetMultiplikator(level, 1.3f);
                     result.Leave = (float)12 * (float)GetMultiplikator(level, 1.3f);
                     result.Chitin = (float)2 * (float)GetMultiplikator(level, 1.3f);
@@ -179,7 +179,7 @@ namespace BrowserPhoenix.Shared
 
             switch (building.Type)
             {
-                case BuildingType.AphidsBreed:
+                case BuildingType.AphidBreed:
                     return 20 * (float)GetMultiplikator(building.Level, 1.5f);
 
                 case BuildingType.Sandpit:

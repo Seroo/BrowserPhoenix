@@ -112,7 +112,7 @@ namespace BrowserPhoenix.Shared.Domain
                 || Type == BuildingType.Sandpit 
                 || Type == BuildingType.QueenLair
                 || Type == BuildingType.Garden
-                || Type == BuildingType.AphidsBreed
+                || Type == BuildingType.AphidBreed
                 || Type == BuildingType.BeetleBreed;
         }
 

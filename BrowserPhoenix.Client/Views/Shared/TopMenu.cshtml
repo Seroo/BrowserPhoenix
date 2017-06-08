@@ -14,12 +14,12 @@
     }
         
 
-    @ResourceCategory("Larvae", resources.Larvae, resources.LarvaeProduction)
-    @ResourceCategory("Food", resources.Food, resources.FoodProduction)
-    @ResourceCategory("Leaves", resources.Leave, resources.LeaveProduction)
-    @ResourceCategory("Sand", resources.Sand, resources.SandProduction)
-    @ResourceCategory("Sugar", resources.Sugar, resources.SugarProduction)
-    @ResourceCategory("Chitin", resources.Chitin, resources.ChitinProduction)
+    @ResourceCategory(ResourceType.Larvae, resources, resources.Larvae, resources.LarvaeProduction)
+    @ResourceCategory(ResourceType.Food, resources, resources.Food, resources.FoodProduction)
+    @ResourceCategory(ResourceType.Leave, resources, resources.Leave, resources.LeaveProduction)
+    @ResourceCategory(ResourceType.Sand, resources, resources.Sand, resources.SandProduction)
+    @ResourceCategory(ResourceType.Sugar, resources, resources.Sugar, resources.SugarProduction)
+    @ResourceCategory(ResourceType.Chitin, resources, resources.Chitin, resources.ChitinProduction)
     
     <div style="clear:both;"></div>
 </div>
@@ -27,20 +27,21 @@
     <a href="/colony/refreshresources/@Player.Current.Colony.Id">Refresh</a>
 </div>
 <div style="clear:both;"></div>
-@helper ResourceCategory(String category, float stored, float production)
+@helper ResourceCategory(ResourceType type, ColonyResource resources, float stored, float production)
 {
     <div class="resource_category">
         <div style="float:left;">
-            @category:
+            <img src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />
         </div>
-        <div id="stored-@category" stored="@stored" style="text-align: right;float:right;">
+        <div id="stored-@type" stored="@stored" style="text-align: right;float:right;">
             @Math.Floor(stored)
         </div>
-        <br />
+        <div style="clear:both;"></div>
+        
         <div style="float:left;">
-            @category Prod:
+            <img src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />+
         </div>
-        <div id="production-@category" production="@production" style="text-align: right;float:right;">
+        <div id="production-@type" class="production" stored="@stored" type="@type" production="@resources.GetProductionPerTenSeconds(type)" style="text-align: right;float:right;">
             @Math.Floor(production)
         </div>
     </div>

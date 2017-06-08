@@ -21,7 +21,7 @@ namespace BrowserPhoenix.Shared
         MushroomFarm = 60,
         Garden = 70,
         [Description("Aphids Breed")]
-        AphidsBreed = 80,
+        AphidBreed = 80,
      //   Rampart = 90,
    //     Trench = 100,
         [Description("Research Hill")]

@@ -90,6 +90,7 @@
     <Compile Include="BuildingHelper.cs" />
     <Compile Include="Commands\Sync\RecalculateResourcesCommand.cs" />
     <Compile Include="RefType.cs" />
+    <Compile Include="ResourceType.cs" />
     <Compile Include="ResourceCollection.cs" />
     <Compile Include="TimerProcessor.cs" />
     <Compile Include="TimerType.cs" />

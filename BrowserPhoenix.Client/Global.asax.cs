@@ -1,4 +1,6 @@
 ﻿using BrowserPhoenix.Shared;
+using BrowserPhoenix.Shared.Commands;
+using BrowserPhoenix.Shared.Commands.Sync;
 using BrowserPhoenix.Shared.Domain;
 using Microsoft.AspNet.Identity;
 using System;
@@ -40,11 +42,11 @@ namespace BrowserPhoenix
                 var userId = User.Identity.GetUserId();
                 var player = Player.Authentificate(userId);
 
-                if(player == null)
+                if (player == null)
                     Response.Redirect("/account/logout");                    
             }
             
-           
+            
 
         }
 

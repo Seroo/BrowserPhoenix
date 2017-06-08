@@ -4,6 +4,7 @@
     .b-MushroomFarm {background: url("/Content/Images/mushroom_farm.png") no-repeat no-repeat; width:70px; height:70px;}
     .no-building {background: url("/Content/Images/no_building.png")}
     .countdown{color:white;}
+    
 </style>
 
 <div id="x_cord" style="display:none;"></div>
@@ -27,18 +28,23 @@
                 }
                
 
-                <div building_id="@(hasBuilding ? building.Id.ToString() : "0")" class="cell @(hasBuilding ? "b-" + building.Type + " l-" + building.Level : "no-building")" context="@context" x_cord="@xCord" y_cord="@yCord" onclick="activateCell(this)">
+                <div building_id="@(hasBuilding ? building.Id.ToString() : "0")" class="cell no-building @(hasBuilding ? "b-" + building.Type + " l-" + building.Level : "no-building")" context="@context" x_cord="@xCord" y_cord="@yCord" onclick="activateCell(this)">
                     @if (hasBuilding)
                     {
-                        if(building.HasTimer())
+                        <img class="building-icon glyph-icon" src="~/Content/Images/Buildings/building-@(building.Type + ".png")"/>
+                        <img class="level-icon glyph-icon" src="~/Content/Images/Level/level-@(building.Level + ".png")" />
+
+                        if (building.HasTimer())
                         {
                             <span class="countdown" time="@Math.Round( building.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
                         }
 
                         <div class="building" title="@building.Type - @building.Level">
-                            @building.Type.ToString()
+                            
                             <br />
                             Level @building.Level
+                            
+                            @*<div class="building-icon-@building.Type building-icon"></div>*@
                         </div>
                     }
                 </div>
@@ -58,7 +64,7 @@
         <a onclick="createBuilding('@BuildingType.Sandpit')">Sandpit</a><br />
         <a onclick="createBuilding('@BuildingType.MushroomFarm')">Mushroom Farm</a><br />
         <a onclick="createBuilding('@BuildingType.Garden')">Garden</a><br />
-        <a onclick="createBuilding('@BuildingType.AphidsBreed')">AphidsBreed</a><br />
+        <a onclick="createBuilding('@BuildingType.AphidBreed')">AphidsBreed</a><br />
         <a onclick="createBuilding('@BuildingType.BeetleBreed')">BeetleBreed</a><br />
         <a onclick="createBuilding('@BuildingType.GraveYard')">GraveYard</a><br />
         <a onclick="createBuilding('@BuildingType.ResearchHill')">ResearchHill</a><br />
@@ -86,7 +92,7 @@
     <div id="context-Garden" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-AphidsBreed" class="partial-context-menu">
+    <div id="context-AphidBreed" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
     <div id="context-BeetleBreed" class="partial-context-menu">
@@ -112,7 +118,26 @@
                 var time = $(this).attr('time');
                 var display = $(this);
                 startTimer(time, display);
-            })
+            });
+
+            window.setInterval(function () {
+
+                $('.production').each(function () {
+                    var production = parseFloat($(this).attr('production').replace(",", "."));
+                    var stored = parseFloat($(this).attr('stored').replace(",", "."));
+
+                    stored = stored + production;
+                    $(this).attr('stored', stored);
+
+                    var userStored = toFixed_norounding(stored, 0)
+                    var type = $(this).attr('type');
+
+                    $('#stored-' + type).html(userStored);
+
+                })
+
+            }, 10000);
+
         };
         
             
@@ -133,7 +158,7 @@
             changeContextMenu(context);
 
             var buildingId = $(sender).attr("building_id");
-            console.log(buildingId);
+            
             $("#selected_building").html(buildingId);
             $("#x_cord").html($(sender).attr("x_cord"));
             $("#y_cord").html($(sender).attr("y_cord"));
@@ -160,6 +185,7 @@
         var building = $("#selected_building").html();
 
         $.get("/colony/levelup/" + building, function (xhr) {
+            
             if (xhr != "")
             {
                 toastr.options = {
