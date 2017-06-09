@@ -1,0 +1,75 @@
+﻿
+@model IEnumerable<Troop>
+<style>
+    .troop-cell {
+        width: 200px;
+        height: 200px;
+        border: 1px solid red;
+        float: left;
+        margin:6px;
+    }
+</style>
+
+
+<div id="building_id" style="display:none">156</div>
+
+<h2>BroodLair</h2>
+@foreach (var type in (TroopType[])Enum.GetValues(typeof(TroopType)))
+{
+    <div class="troop-cell">
+        @type.ToName()
+
+        @{
+            var troop = Model.FirstOrDefault(x => x.Type == type && x.HasTimer());
+            if (troop != null)
+            {
+                <span class="countdown" time="@Math.Round( troop.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
+            }
+        }
+    </div>
+    
+}
+
+@section ContextMenu{
+<div class="partial-context-menu">
+    <div class="build-menu">
+        <div style="font-weight:bold;">BUILD</div>
+
+        @foreach (var type in (TroopType[])Enum.GetValues(typeof(TroopType)))
+        {
+            <a onclick="createTroop('@type')">@type.ToName()</a><br />
+        }
+    </div>
+</div>
+}
+
+<script>
+    function activateCell(sender) {
+        var wasActive = $(sender).hasClass("active");
+        $(".cell").removeClass("active");
+
+        if (!wasActive) {
+            //activate contextmenu
+
+            var context = $(sender).attr("context");
+
+            changeContextMenu(context);
+
+            var buildingId = $(sender).attr("building_id");
+
+            $("#selected_building").html(buildingId);
+         
+
+            $(sender).addClass("active");
+        }
+        else {
+            //deactivate contenxtMenus
+        }
+    }
+
+    function createTroop(type) {
+        var buildingId = $('#building_id').html();
+
+        $.get("/troop/create/" + buildingId + "/?type=" + type);
+    }
+</script>

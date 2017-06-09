@@ -55,11 +55,9 @@
         <div id="context-menu">
             @RenderSection("ContextMenu", false)
         </div>
-
-
-
         @Html.Partial("Footer")
-        </div>
+    </div>
+    
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -107,6 +105,37 @@
         timer();
         setInterval(timer, 1000);
     }
+    @if(!Player.Current.IsAnonymous)
+    {
+        <text>
+            window.onload = function(e) {
+                $('.countdown').each(function() {
+                        var time = $(this).attr('time');
+                        var display = $(this);
+                        startTimer(time, display);
+                    });
+
+                    window.setInterval(function() {
+
+                    $('.production').each(function() {
+                            var production = parseFloat($(this).attr('production').replace(",", "."));
+                            var stored = parseFloat($(this).attr('stored').replace(",", "."));
+
+                            stored = stored + production;
+                        $(this).attr('stored', stored);
+
+                            var userStored = toFixed_norounding(stored, 0)
+                        var type = $(this).attr('type');
+
+                        $('#stored-' + type).html(userStored);
+
+                        })
+
+                }, 10000);
+            };
+        </text>
+    }
+    
 
   
 </script>

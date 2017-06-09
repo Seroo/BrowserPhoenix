@@ -11,7 +11,8 @@ namespace BrowserPhoenix.Shared
     {
         None = 100,
         Colony = 10,
-        Building = 20
+        Building = 20,
+        Troop = 30
         
     }
 }

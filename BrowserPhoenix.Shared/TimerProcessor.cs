@@ -47,6 +47,7 @@ namespace BrowserPhoenix.Shared
                                 break;
 
                             
+
                         }
                     }
                     break;
@@ -54,6 +55,21 @@ namespace BrowserPhoenix.Shared
                 case RefType.Colony:
                     break;
 
+                case RefType.Troop:
+
+                    var troop = Troop.GetById(db, timer.RefId);
+
+                    switch(timer.Type)
+                    {
+                            case TimerType.CreateTroop:
+
+                                troop.LevelUp(db, timer.EndDate);
+                                break;
+                    }
+                    
+                    break;
+
+                
                 case RefType.None:
 
                     switch(timer.Type)

@@ -12,6 +12,7 @@ namespace BrowserPhoenix.Shared
         CreateColony = 10,
         CreateBuilding = 20,
         LevelUpBuilding = 30,
-        CalculateHighscore = 40
+        CalculateHighscore = 40,
+        CreateTroop = 50
     }
 }

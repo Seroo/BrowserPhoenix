@@ -56,7 +56,7 @@
 </div>
 
 @section ContextMenu{
-    <div id="context-empty" class="partial-context-menu">
+    <div id="context-empty" class="colony-context-menu">
         <a onclick="createBuilding('@BuildingType.QueenLair')">Queen's Lair</a><br />
         <a onclick="createBuilding('@BuildingType.BroodLair')">Brood Lair</a><br />
         <a onclick="createBuilding('@BuildingType.Stock')">Stock</a><br />
@@ -71,40 +71,40 @@
         <a onclick="createBuilding('@BuildingType.TroopPool')">TroopPool</a><br />
     </div>
     
-    <div id="context-QueenLair" class="partial-context-menu">
+    <div id="context-QueenLair" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-BroodLair" class="partial-context-menu">
+    <div id="context-BroodLair" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Stock" class="partial-context-menu">
+    <div id="context-Stock" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Warehouse" class="partial-context-menu">
+    <div id="context-Warehouse" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Sandpit" class="partial-context-menu">
+    <div id="context-Sandpit" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-MushroomFarm" class="partial-context-menu">
+    <div id="context-MushroomFarm" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Garden" class="partial-context-menu">
+    <div id="context-Garden" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-AphidBreed" class="partial-context-menu">
+    <div id="context-AphidBreed" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-BeetleBreed" class="partial-context-menu">
+    <div id="context-BeetleBreed" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-GraveYard" class="partial-context-menu">
+    <div id="context-GraveYard" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-ResearchHill" class="partial-context-menu">
+    <div id="context-ResearchHill" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-TroopPool" class="partial-context-menu">
+    <div id="context-TroopPool" class="colony-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
     
@@ -113,32 +113,7 @@
 <script>
    
    
-        window.onload = function (e) {
-            $('.countdown').each(function () {
-                var time = $(this).attr('time');
-                var display = $(this);
-                startTimer(time, display);
-            });
-
-            window.setInterval(function () {
-
-                $('.production').each(function () {
-                    var production = parseFloat($(this).attr('production').replace(",", "."));
-                    var stored = parseFloat($(this).attr('stored').replace(",", "."));
-
-                    stored = stored + production;
-                    $(this).attr('stored', stored);
-
-                    var userStored = toFixed_norounding(stored, 0)
-                    var type = $(this).attr('type');
-
-                    $('#stored-' + type).html(userStored);
-
-                })
-
-            }, 10000);
-
-        };
+        
         
             
         
@@ -177,14 +152,14 @@
         var y = $("#y_cord").html();
 
 
-        $.get("/colony/build/" + colonyId + "/?type=" + type + "&x=" + x + "&y=" + y);
+        $.get("/building/create/" + colonyId + "/?type=" + type + "&x=" + x + "&y=" + y);
     }
 
     function levelUpBuilding()
     {
         var building = $("#selected_building").html();
 
-        $.get("/colony/levelup/" + building, function (xhr) {
+        $.get("/building/levelup/" + building, function (xhr) {
             
             if (xhr != "")
             {

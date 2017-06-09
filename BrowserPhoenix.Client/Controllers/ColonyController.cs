@@ -59,50 +59,9 @@ namespace BrowserPhoenix.Controllers
             return Content("");
         }
 
-        [Authorize]
-        public ActionResult Build(Int64 id, BuildingType type, Int32 x, Int32 y)
-        {
-            using (var db = DatabasePortal.Open())
-            {
-                //check if db would connect twice if i dont give it to the class
-                var colony = Colony.GetById(db, id);
+        
 
-
-                var command = new CreateBuildingCommand();
-                command.ColonyId = colony.Id;
-                command.CreateDate = DateTime.Now;
-                command.Type = type;
-                command.XCord = x;
-                command.YCord = y;
-
-                CommandPortal.Send(command);
-            }
-
-            return Content("");
-        }
-
-        [Authorize]
-        public ActionResult LevelUp(Int64 id)
-        {
-
-            if(Player.Current.Colony.CheckResourcesAvailable(id))
-            {
-                var command = new LevelUpBuildingCommand();
-                command.BuildingId = id;
-                command.CreateDate = DateTime.Now;
-                command.PlayerId = Player.Current.Id;
-
-                CommandPortal.Send(command);
-
-
-                return Content("");
-            }
-            else
-            {
-                return Content("Resources Missing");
-            }
-            
-        }
+        
 
         //just a test
         [Authorize]

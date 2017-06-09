@@ -88,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingHelper.cs" />
+    <Compile Include="Commands\Sync\TroopBuildingCommand.cs" />
+    <Compile Include="Domain\Troop.cs" />
+    <Compile Include="TroopHelper.cs" />
+    <Compile Include="TroopType.cs" />
     <Compile Include="Commands\Sync\RecalculateResourcesCommand.cs" />
     <Compile Include="RefType.cs" />
     <Compile Include="ResourceType.cs" />

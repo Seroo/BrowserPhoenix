@@ -31,17 +31,17 @@
 {
     <div class="resource_category">
         <div style="float:left;">
-            <img src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />
+            <img title="@type.ToString()" src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />
         </div>
-        <div id="stored-@type" stored="@stored" style="text-align: right;float:right;">
+        <div id="stored-@type" stored="@stored" style="text-align: right;float:right;font-weight:bold;">
             @Math.Floor(stored)
         </div>
         <div style="clear:both;"></div>
         
         <div style="float:left;">
-            <img src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />+
+            <img  title="@type.ToString() Production" src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />+
         </div>
-        <div id="production-@type" class="production" stored="@stored" type="@type" production="@resources.GetProductionPerTenSeconds(type)" style="text-align: right;float:right;">
+        <div id="production-@type" class="production" stored="@stored" type="@type" production="@resources.GetProductionPerTenSeconds(type)" style="text-align: right;float:right;font-weight:bold;">
             @Math.Floor(production)
         </div>
     </div>
