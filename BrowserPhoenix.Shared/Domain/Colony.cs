@@ -116,7 +116,11 @@ namespace BrowserPhoenix.Shared.Domain
 
         public void UpdateResources(Database db, DateTime timeOfHappening)
         {
-            this.Resources.RecalculateResources(db, timeOfHappening);
+            if(this.Resources != null)
+            {
+                this.Resources.RecalculateResources(db, timeOfHappening);
+            }
+            
         }
         
         public void UpdateResourceProduction(Database db, DateTime timeOfHappening)

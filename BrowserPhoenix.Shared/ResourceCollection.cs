@@ -17,6 +17,33 @@ namespace BrowserPhoenix.Shared
         
         public float Larvae { get; set; }
         
-        public float Food { get; set; }        
+        public float Food { get; set; }   
+        
+        public float GetResource(ResourceType type)
+        {
+            switch(type)
+            {
+                case ResourceType.Chitin:
+                    return Chitin;
+
+                case ResourceType.Food:
+                    return Food;
+
+                case ResourceType.Larvae:
+                    return Larvae;
+
+                case ResourceType.Leave:
+                    return Leave;
+
+                case ResourceType.Sand:
+                    return Sand;
+
+                case ResourceType.Sugar:
+                    return Sugar;
+
+                default:
+                    return 1000;
+            }
+        }
     }
 }

@@ -61,10 +61,11 @@ namespace BrowserPhoenix.Shared
 
                     switch(timer.Type)
                     {
-                            case TimerType.CreateTroop:
+                        case TimerType.CreateTroop:
 
-                                troop.LevelUp(db, timer.EndDate);
-                                break;
+                            troop.LevelUp(db, timer.EndDate);
+                            troop.Colony.UpdateResources(db, timer.EndDate);
+                            break;
                     }
                     
                     break;

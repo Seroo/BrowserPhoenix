@@ -2,11 +2,11 @@
 @model IEnumerable<Troop>
 <style>
     .troop-cell {
-        width: 200px;
-        height: 200px;
+        width: 175px;
+        height: 175px;
         border: 1px solid red;
         float: left;
-        margin:6px;
+        margin: 6px;
     }
 </style>
 
@@ -17,14 +17,45 @@
 @foreach (var type in (TroopType[])Enum.GetValues(typeof(TroopType)))
 {
     <div class="troop-cell">
-        @type.ToName()
-
+       
         @{
+            var troopCount = Model.Count(x => x.Type == type && !x.HasTimer());
             var troop = Model.FirstOrDefault(x => x.Type == type && x.HasTimer());
+
+            @(type.ToName() + "    " + @troopCount)
+
+            <br />
+            <br />
+
+
+            <div class="resource-info">
+                @{
+                    var cost = TroopHelper.GetBuildCost(type, 1);
+                    foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
+                    {
+                        var resourceCost = cost.GetResource(resourceType);
+                        if(resourceCost == 0)
+                        {
+                            continue;
+                        }
+
+                        <div style="float:left;">
+                            @resourceType.ToString()
+                        </div>
+                        <div style="float:left;">
+                            @resourceCost
+                        </div>
+                        <div style="clear:both;"></div>
+                    }
+
+                }
+            </div>
             if (troop != null)
             {
                 <span class="countdown" time="@Math.Round( troop.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
             }
+            <br />
+            <button onclick="createTroop('@type')" type="button">Breed</button>
         }
     </div>
     
@@ -34,6 +65,8 @@
 <div class="partial-context-menu">
     <div class="build-menu">
         <div style="font-weight:bold;">BUILD</div>
+        
+            
 
         @foreach (var type in (TroopType[])Enum.GetValues(typeof(TroopType)))
         {
@@ -42,6 +75,8 @@
     </div>
 </div>
 }
+
+
 
 <script>
     function activateCell(sender) {

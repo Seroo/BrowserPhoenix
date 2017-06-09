@@ -11,6 +11,8 @@ namespace BrowserPhoenix.Shared
         {
             var result = new ResourceCollection();
 
+            //hack 
+            buildingLevel = 1;
 
             switch (type)
             {
@@ -109,6 +111,7 @@ namespace BrowserPhoenix.Shared
                     result.Chitin = (float)60 * (float)GetMultiplikator(buildingLevel, 1f);
 
                     break;
+                    
             }
 
             return result;
