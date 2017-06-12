@@ -1,4 +1,5 @@
-﻿using BrowserPhoenix.Shared;
+﻿using BrowserPhoenix.Client.Models;
+using BrowserPhoenix.Shared;
 using BrowserPhoenix.Shared.Commands;
 using BrowserPhoenix.Shared.Commands.Sync;
 using BrowserPhoenix.Shared.Domain;
@@ -22,9 +23,14 @@ namespace BrowserPhoenix.Client.Controllers
         {
             using (var db = DatabasePortal.Open())
             {
-                var troops = Troop.GetByBuildingId(db, id);
+                var troops = Troop.GetByColonyId(db, Player.Current.Colony.Id, true);
 
-                return View(troops);
+
+                var result = new BroodLairModel();
+                result.Troops = troops;
+                result.Building = Building.GetById(db, id);
+             
+                return View(result);
             }
                 
 
@@ -55,22 +61,27 @@ namespace BrowserPhoenix.Client.Controllers
         }
 
         [Authorize]
-        public ActionResult Create(Int64 id, BuildingType type, Int32 x, Int32 y)
+        public ActionResult Create(BuildingType type, Int32 x, Int32 y)
         {
             using (var db = DatabasePortal.Open())
             {
-                //check if db would connect twice if i dont give it to the class
-                var colony = Colony.GetById(db, id);
+                if (Player.Current.Colony.CheckResourcesAvailable(type, 1))
+                {
+                    var command = new CreateBuildingCommand();
+                    command.ColonyId = Player.Current.Colony.Id;
+                    command.CreateDate = DateTime.Now;
+                    command.Type = type;
+                    command.XCord = x;
+                    command.YCord = y;
 
+                    CommandPortal.Send(command);
+                }
+                else
+                {
+                    return Content("Resources Missing");
+                }
 
-                var command = new CreateBuildingCommand();
-                command.ColonyId = colony.Id;
-                command.CreateDate = DateTime.Now;
-                command.Type = type;
-                command.XCord = x;
-                command.YCord = y;
-
-                CommandPortal.Send(command);
+                
             }
 
             return Content("");

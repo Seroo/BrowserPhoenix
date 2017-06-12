@@ -37,5 +37,17 @@ namespace BrowserPhoenix.Client.Controllers
 
             return Content("");
         }
+
+        [HttpGet]
+        public ActionResult Attack(Int32? x, Int32? y)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Attack(Int32 x, Int32 y, TroopCollection troops)
+        {
+            return View();
+        }
     }
 }

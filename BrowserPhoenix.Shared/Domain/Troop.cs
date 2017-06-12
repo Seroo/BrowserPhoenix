@@ -20,8 +20,8 @@ namespace BrowserPhoenix.Shared.Domain
         [Column("create_date")]
         public DateTime CreateDate { get; set; }
 
-        [Column("level")]
-        public Int32 Level { get; set; }
+        [Column("amount")]
+        public Int32 Amount { get; set; }
         
         [Column("building_id")]
         public Int64 BuildingId { get; set; }
@@ -42,36 +42,45 @@ namespace BrowserPhoenix.Shared.Domain
             return " LEFT JOIN colony ON troop.colony_id = colony.id ";
         }
 
-        public static String JoinTimer()
+        public static String JoinTimer(Boolean withoutBuildTimer = true)
         {
-            return " LEFT JOIN timer ON troop.id = timer.ref_id and timer.ref_type = 30 ";
+            return " LEFT JOIN timer ON troop.id = timer.ref_id and timer.ref_type = 30" + (withoutBuildTimer ? "and timer.type != 50 " : "");
         }
 
-        public static IEnumerable<Troop> GetByColonyId(Database db, Int64 id)
+        public static IEnumerable<Troop> GetByColonyId(Database db, Int64 id, Boolean? withBuildTimer = false)
         {
             var troops = db.Fetch<Troop, Colony, Timer>(
                     Sql.Builder
                     .Append("SELECT * FROM troop")
                     .Append(Troop.JoinColony())
-                    .Append(Troop.JoinTimer())
+                    .Append(Troop.JoinTimer(false))
                     .Append("WHERE troop.colony_id =@0 ", id)
                     );
             
             return troops;
         }
 
-        public static IEnumerable<Troop> GetByBuildingId(Database db, Int64 id)
+        public static Troop GetInactiveTroopType(Database db, Int64 colony_id, TroopType type)
         {
-            var troops = db.Fetch<Troop, Timer>(
+            var troops = db.Fetch<Troop, Colony, Timer>(
                     Sql.Builder
                     .Append("SELECT * FROM troop")
+                    .Append(Troop.JoinColony())
                     .Append(Troop.JoinTimer())
-                    .Append("WHERE troop.building_id =@0 ", id)
+                    .Append("WHERE troop.colony_id =@0 ", colony_id)
+                    .Append(" AND troop.type=@0", type)
                     );
 
-            return troops;
+            if(troops.Any())
+            {
+                return troops.First();
+            }
+            else
+            {
+                return null;
+            }
         }
-
+        
         public static Troop GetById(Database db, Int64 id)
         {
             var troops = db.Fetch<Troop, Colony>(
@@ -85,7 +94,7 @@ namespace BrowserPhoenix.Shared.Domain
 
             return troop;
         }
-
+        
         public static Troop Create(Database portal, DateTime createDate, Int64 buildingId, Int64 colonyId, TroopType type)
         {
             var result = new Troop();
@@ -96,20 +105,16 @@ namespace BrowserPhoenix.Shared.Domain
             
             result.CreateDate = createDate;
 
-            result.Level = 0;
+            result.Amount = 0;
 
             portal.Save(result);
 
             return result;
         }
         
-        public void LevelUp(Database portal, DateTime createDate)
+        public void AddUnit(Database portal, DateTime createDate)
         {
-
-            //feld wo das level datum gespeichert wird füllen
-            //checken wegen max lvl
-
-            this.Level = this.Level + 1;
+            this.Amount = this.Amount + 1;
 
             portal.Save(this);
         }

@@ -10,6 +10,7 @@ namespace BrowserPhoenix.Shared.Commands.Sync
     public class CreateTroopCommand : BaseCommand, ICommand
     {
         public Int64 BuildingId { get; set; }
+        public Int64 ColonyId { get; set; }
         public TroopType Type { get; set; }
 
         public void Process()
@@ -20,11 +21,13 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
                 var building = Building.GetById(db, BuildingId);
 
-                var troop = Troop.Create(db, this.CreateDate, BuildingId, building.ColonyId, Type);
+                var troop = Troop.GetInactiveTroopType(db, ColonyId, Type);
 
-                troop = Troop.GetById(db, troop.Id);
-
-               
+                if(troop == null)
+                {
+                    troop = Troop.Create(db, this.CreateDate, BuildingId, building.ColonyId, Type);
+                }
+                                
                 var buildTime = TroopHelper.GetBuildTime(troop.Type, building.Level);
 
                 var costs = TroopHelper.GetBuildCost(troop.Type, building.Level);

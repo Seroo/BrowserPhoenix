@@ -4,7 +4,10 @@
     .b-MushroomFarm {background: url("/Content/Images/mushroom_farm.png") no-repeat no-repeat; width:70px; height:70px;}
     .no-building {background: url("/Content/Images/no_building.png")}
     .countdown{color:white;}
-    
+    .partial-context-menu {
+        display: none;
+        font-size: 20px;
+    }
 </style>
 
 <div id="x_cord" style="display:none;"></div>
@@ -21,33 +24,14 @@
                 var building = Model.Buildings.FirstOrDefault(x => x.XCord == xCord && x.YCord == yCord);
                 var hasBuilding = building != null;
 
-                var context = "empty";
-                if (hasBuilding)
+                if(hasBuilding)
                 {
-                    context = building.Type.ToString();
+                    @Html.Partial("CellBuilding", new ColonyCellModel(xCord, yCord, building));
                 }
-               
-
-                <div building_id="@(hasBuilding ? building.Id.ToString() : "0")" class="cell no-building @(hasBuilding ? "b-" + building.Type + " l-" + building.Level : "no-building")" context="@context" x_cord="@xCord" y_cord="@yCord" onclick="activateCell(this)">
-                    @if (hasBuilding)
-                    {
-                        <img class="building-icon glyph-icon" src="~/Content/Images/Buildings/building-@(building.Type + ".png")"/>
-                        <img class="level-icon glyph-icon" src="~/Content/Images/Level/level-@(building.Level + ".png")" />
-
-                        if (building.HasTimer())
-                        {
-                            <span class="countdown" time="@Math.Round( building.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
-                        }
-
-                        <div class="building" title="@building.Type - @building.Level">
-                            
-                            <br />
-                            Level @building.Level
-                            
-                            @*<div class="building-icon-@building.Type building-icon"></div>*@
-                        </div>
-                    }
-                </div>
+                else
+                {
+                    @Html.Partial("CellEmpty", new ColonyCellModel(xCord, yCord));
+                }
             }
         </div>
         <div style="clear:left"></div>
@@ -56,7 +40,7 @@
 </div>
 
 @section ContextMenu{
-    <div id="context-empty" class="colony-context-menu">
+    <div id="context-empty" class="partial-context-menu">
         <a onclick="createBuilding('@BuildingType.QueenLair')">Queen's Lair</a><br />
         <a onclick="createBuilding('@BuildingType.BroodLair')">Brood Lair</a><br />
         <a onclick="createBuilding('@BuildingType.Stock')">Stock</a><br />
@@ -71,40 +55,41 @@
         <a onclick="createBuilding('@BuildingType.TroopPool')">TroopPool</a><br />
     </div>
     
-    <div id="context-QueenLair" class="colony-context-menu">
+    <div id="context-QueenLair" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-BroodLair" class="colony-context-menu">
+    <div id="context-BroodLair" class="partial-context-menu">
+        <a onclick="levelUpBuilding()">Level Up</a><br />
+        <a onclick="gotoBroodLair()">Goto</a><br />
+    </div>
+    <div id="context-Stock" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Stock" class="colony-context-menu">
+    <div id="context-Warehouse" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Warehouse" class="colony-context-menu">
+    <div id="context-Sandpit" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Sandpit" class="colony-context-menu">
+    <div id="context-MushroomFarm" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-MushroomFarm" class="colony-context-menu">
+    <div id="context-Garden" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-Garden" class="colony-context-menu">
+    <div id="context-AphidBreed" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-AphidBreed" class="colony-context-menu">
+    <div id="context-BeetleBreed" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-BeetleBreed" class="colony-context-menu">
+    <div id="context-GraveYard" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-GraveYard" class="colony-context-menu">
+    <div id="context-ResearchHill" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
-    <div id="context-ResearchHill" class="colony-context-menu">
-        <a onclick="levelUpBuilding()">Level Up</a><br />
-    </div>
-    <div id="context-TroopPool" class="colony-context-menu">
+    <div id="context-TroopPool" class="partial-context-menu">
         <a onclick="levelUpBuilding()">Level Up</a><br />
     </div>
     
@@ -147,12 +132,28 @@
 
     function createBuilding(type)
     {
-        var colonyId = $('#colony_id').html();
         var x = $("#x_cord").html();
         var y = $("#y_cord").html();
 
 
-        $.get("/building/create/" + colonyId + "/?type=" + type + "&x=" + x + "&y=" + y);
+        $.get("/building/create/?type=" + type + "&x=" + x + "&y=" + y, function (xhr) {
+            if (xhr != "") {
+                toastr.options = {
+                    tapToDismiss: true,
+                    positionClass: "toast-top-center"
+                };
+                toastr.warning(xhr);
+            }
+            else {
+                location.reload();
+            }
+        });
+    }
+
+    function gotoBroodLair() {
+        var building = $("#selected_building").html();
+
+        location.href = "/building/broodlair/" + building;
     }
 
     function levelUpBuilding()
@@ -168,6 +169,10 @@
                     positionClass: "toast-top-center"
                 };
                 toastr.warning(xhr);
+            }
+            else
+            {
+                location.reload();
             }
         });
     }

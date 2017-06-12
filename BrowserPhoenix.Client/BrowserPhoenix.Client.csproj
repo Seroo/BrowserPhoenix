@@ -216,6 +216,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ColonyCellModel.cs" />
+    <Compile Include="Models\BroodLairModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ColonyModel.cs" />
@@ -336,6 +338,9 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\TopMenu.cshtml" />
     <Content Include="Views\Building\BroodLair.cshtml" />
+    <Content Include="Views\Colony\CellBuilding.cshtml" />
+    <Content Include="Views\Colony\CellEmpty.cshtml" />
+    <Content Include="Views\Troop\Attack.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -345,7 +350,6 @@
     <Folder Include="Views\Research\" />
     <Folder Include="Views\Setting\" />
     <Folder Include="Views\Trade\" />
-    <Folder Include="Views\Troop\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

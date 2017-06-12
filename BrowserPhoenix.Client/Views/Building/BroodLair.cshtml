@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Troop>
+@model BroodLairModel
 <style>
     .troop-cell {
         width: 175px;
@@ -19,8 +19,8 @@
     <div class="troop-cell">
        
         @{
-            var troopCount = Model.Count(x => x.Type == type && !x.HasTimer());
-            var troop = Model.FirstOrDefault(x => x.Type == type && x.HasTimer());
+            var troopCount = Model.Troops.Where(x => x.Type == type).Sum(x => x.Amount);
+            var troopInBuild = Model.Troops.FirstOrDefault(x => x.Type == type && x.HasTimer());
 
             @(type.ToName() + "    " + @troopCount)
 
@@ -50,9 +50,9 @@
 
                 }
             </div>
-            if (troop != null)
+            if (troopInBuild != null)
             {
-                <span class="countdown" time="@Math.Round( troop.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
+                <span class="countdown" time="@Math.Round( troopInBuild.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
             }
             <br />
             <button onclick="createTroop('@type')" type="button">Breed</button>

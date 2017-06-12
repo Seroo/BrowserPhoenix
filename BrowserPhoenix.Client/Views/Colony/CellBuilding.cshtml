@@ -1,0 +1,23 @@
+﻿@model ColonyCellModel
+
+@{
+    Layout = null;
+}
+
+
+
+<div building_id="@Model.Building.Id" class="cell no-building @("b-" + Model.Building.Type + " l-" + Model.Building.Level)" context="@Model.Building.Type.ToString()" x_cord="@Model.X" y_cord="@Model.Y" onclick="activateCell(this)">
+   
+    <img class="building-icon glyph-icon" src="~/Content/Images/Buildings/building-@(Model.Building.Type + ".png")" />
+    <img class="level-icon glyph-icon" src="~/Content/Images/Level/level-@(Model.Building.Level + ".png")" />
+
+    @if (Model.Building.HasTimer())
+    {
+        <span class="countdown" time="@Math.Round( Model.Building.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
+    }
+
+    <div class="building" title="@Model.Building.Type - @Model.Building.Level">
+
+    </div>
+    
+</div>

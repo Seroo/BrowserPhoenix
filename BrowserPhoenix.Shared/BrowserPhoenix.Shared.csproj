@@ -90,6 +90,7 @@
     <Compile Include="BuildingHelper.cs" />
     <Compile Include="Commands\Sync\TroopBuildingCommand.cs" />
     <Compile Include="Domain\Troop.cs" />
+    <Compile Include="TroopCollection.cs" />
     <Compile Include="TroopHelper.cs" />
     <Compile Include="TroopType.cs" />
     <Compile Include="Commands\Sync\RecalculateResourcesCommand.cs" />

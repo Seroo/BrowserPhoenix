@@ -132,15 +132,20 @@ namespace BrowserPhoenix.Shared.Domain
             this.Resources.RecalculateResourceProduction(db, timeOfHappening, resourceBuildings);
         }
 
+        public Boolean CheckResourcesAvailable(BuildingType type, Int32 level)
+        {
+            var costs = BuildingHelper.GetBuildCost(type, level);
+
+            return this.Resources.CheckAvailable(costs);
+        }
+
         public Boolean CheckResourcesAvailable(Int64 buildingId)
         {
             using (var db = DatabasePortal.Open())
             {
                 var building = Building.GetById(db, buildingId);
 
-                var costs = BuildingHelper.GetBuildCost(building.Type, building.Level + 1);
-
-                return this.Resources.CheckAvailable(costs);
+                return CheckResourcesAvailable(building.Type, building.Level + 1);
             }
         }
 

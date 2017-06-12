@@ -63,8 +63,7 @@ namespace BrowserPhoenix.Shared
                     {
                         case TimerType.CreateTroop:
 
-                            troop.LevelUp(db, timer.EndDate);
-                            troop.Colony.UpdateResources(db, timer.EndDate);
+                            troop.AddUnit(db, timer.EndDate);
                             break;
                     }
                     
