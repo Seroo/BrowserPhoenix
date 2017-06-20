@@ -42,9 +42,9 @@ namespace BrowserPhoenix.Shared.Domain
             return " LEFT JOIN colony ON troop.colony_id = colony.id ";
         }
 
-        public static String JoinTimer(Boolean withoutBuildTimer = true)
+        public static String JoinTimer()
         {
-            return " LEFT JOIN timer ON troop.id = timer.ref_id and timer.ref_type = 30" + (withoutBuildTimer ? "and timer.type != 50 " : "");
+            return " LEFT JOIN timer ON troop.id = timer.ref_id and timer.ref_type = 30";
         }
 
         public static IEnumerable<Troop> GetByColonyId(Database db, Int64 id, Boolean? withBuildTimer = false)
@@ -53,7 +53,7 @@ namespace BrowserPhoenix.Shared.Domain
                     Sql.Builder
                     .Append("SELECT * FROM troop")
                     .Append(Troop.JoinColony())
-                    .Append(Troop.JoinTimer(false))
+                    .Append(Troop.JoinTimer())
                     .Append("WHERE troop.colony_id =@0 ", id)
                     );
             
@@ -117,8 +117,7 @@ namespace BrowserPhoenix.Shared.Domain
             this.Amount = this.Amount + 1;
 
             portal.Save(this);
-        }
-        
+        }   
 
 
         public Boolean HasTimer()

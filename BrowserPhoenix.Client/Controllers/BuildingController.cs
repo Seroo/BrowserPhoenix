@@ -43,7 +43,7 @@ namespace BrowserPhoenix.Client.Controllers
 
             if (Player.Current.Colony.CheckResourcesAvailable(id))
             {
-                var command = new LevelUpBuildingCommand();
+                var command = new LevelUpBuildingTimer();
                 command.BuildingId = id;
                 command.CreateDate = DateTime.Now;
                 command.PlayerId = Player.Current.Id;
@@ -67,7 +67,7 @@ namespace BrowserPhoenix.Client.Controllers
             {
                 if (Player.Current.Colony.CheckResourcesAvailable(type, 1))
                 {
-                    var command = new CreateBuildingCommand();
+                    var command = new CreateBuildingTimer();
                     command.ColonyId = Player.Current.Colony.Id;
                     command.CreateDate = DateTime.Now;
                     command.Type = type;

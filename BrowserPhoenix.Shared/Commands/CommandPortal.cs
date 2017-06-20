@@ -38,12 +38,13 @@ namespace BrowserPhoenix.Shared.Commands
         {
             // das hier kommt in eine init im static bla
             Dictionary<Type, CommandProcessor> commandProcessors = new Dictionary<Type, CommandProcessor>();
-            commandProcessors.Add(typeof(CreateBuildingCommand), new CommandProcessor<CreateBuildingCommand>());
+            commandProcessors.Add(typeof(CreateBuildingTimer), new CommandProcessor<CreateBuildingTimer>());
             commandProcessors.Add(typeof(GetPointsCommand), new CommandProcessor<GetPointsCommand>());
             commandProcessors.Add(typeof(CreateColonyCommand), new CommandProcessor<CreateColonyCommand>());
-            commandProcessors.Add(typeof(LevelUpBuildingCommand), new CommandProcessor<LevelUpBuildingCommand>());
+            commandProcessors.Add(typeof(LevelUpBuildingTimer), new CommandProcessor<LevelUpBuildingTimer>());
             commandProcessors.Add(typeof(RecalculateResourcesCommand), new CommandProcessor<RecalculateResourcesCommand>());
             commandProcessors.Add(typeof(CreateTroopCommand), new CommandProcessor<CreateTroopCommand>());
+            commandProcessors.Add(typeof(LevelUpBuildingCommand), new CommandProcessor<LevelUpBuildingCommand>());
             //
 
             //das hier muss auch statis irgenwo sein

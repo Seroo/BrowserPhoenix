@@ -39,6 +39,20 @@ namespace BrowserPhoenix.Shared.Domain
         [Column("timer_id")]
         public Timer Timer { get; set; }
 
+        [Ignore]
+        public Boolean IsResourceBuilding
+        {
+            get
+            {
+                return Type == BuildingType.MushroomFarm
+                    || Type == BuildingType.Sandpit
+                    || Type == BuildingType.QueenLair
+                    || Type == BuildingType.Garden
+                    || Type == BuildingType.AphidBreed
+                    || Type == BuildingType.BeetleBreed;
+            }
+        }
+
         public static String JoinColony()
         {
             return " LEFT JOIN colony ON building.colony_id = colony.id ";
@@ -105,16 +119,8 @@ namespace BrowserPhoenix.Shared.Domain
             portal.Save(this);
         }
         
-
-        public Boolean IsResourceBuilding()
-        {
-            return Type == BuildingType.MushroomFarm 
-                || Type == BuildingType.Sandpit 
-                || Type == BuildingType.QueenLair
-                || Type == BuildingType.Garden
-                || Type == BuildingType.AphidBreed
-                || Type == BuildingType.BeetleBreed;
-        }
+        
+       
 
         public Boolean HasTimer()
         {

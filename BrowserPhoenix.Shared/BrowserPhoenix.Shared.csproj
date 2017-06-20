@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingHelper.cs" />
+    <Compile Include="Commands\Sync\LevelUpBuildingCommand.cs" />
     <Compile Include="Commands\Sync\TroopBuildingCommand.cs" />
     <Compile Include="Domain\Troop.cs" />
     <Compile Include="TroopCollection.cs" />
@@ -104,8 +105,8 @@
     <Compile Include="Commands\CommandPortal.cs" />
     <Compile Include="Commands\CommandProcessor.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\Sync\LevelUpBuildingCommand.cs" />
-    <Compile Include="Commands\Sync\CreateBuildingCommand.cs" />
+    <Compile Include="Commands\Sync\LevelUpBuildingTimer.cs" />
+    <Compile Include="Commands\Sync\CreateBuildingTimer.cs" />
     <Compile Include="Commands\Sync\CreateColonyCommand.cs" />
     <Compile Include="Commands\Sync\GetPointsCommand.cs" />
     <Compile Include="Commands\CommandType.cs" />

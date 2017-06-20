@@ -36,7 +36,7 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
                 var endDate = CreateDate.Add(buildTime);
 
-                Timer.Create(db, PlayerId, TimerType.CreateTroop, RefType.Troop, troop.Id, endDate);
+                Timer.Create(db, PlayerId, TimerType.CreateTroop, RefType.Building, BuildingId, endDate);
             }
         }
     }

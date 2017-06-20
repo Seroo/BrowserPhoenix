@@ -1,4 +1,6 @@
-﻿using BrowserPhoenix.Shared.Domain;
+﻿using BrowserPhoenix.Shared.Commands;
+using BrowserPhoenix.Shared.Commands.Sync;
+using BrowserPhoenix.Shared.Domain;
 using PetaPoco;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace BrowserPhoenix.Shared
     {
         public static void Process(Database db, Timer timer)
         {
+            
             switch (timer.RefType)
             {
                 case RefType.Building:
@@ -21,29 +24,20 @@ namespace BrowserPhoenix.Shared
                         switch (timer.Type)
                         {
                             case TimerType.CreateBuilding:
-                                if (building.IsResourceBuilding())
-                                {
-                                    colony.UpdateResources(db, timer.EndDate);
-                                }
+                                var command = new LevelUpBuildingCommand();
+                                command.BuildingId = timer.RefId;
+                                command.TimeOfHappening = timer.EndDate;
 
-                                building.LevelUp(db, timer.EndDate);
-                                if (building.IsResourceBuilding())
-                                {
-                                    colony.UpdateResourceProduction(db, timer.EndDate);
-                                }
+                                CommandPortal.Send(command);
                                 break;
 
                             case TimerType.LevelUpBuilding:
-                                if (building.IsResourceBuilding())
-                                {
-                                    colony.UpdateResources(db,timer.EndDate);
-                                }
+                                var command2 = new LevelUpBuildingCommand();
+                                command2.BuildingId = timer.RefId;
+                                command2.TimeOfHappening = timer.EndDate;
 
-                                building.LevelUp(db, timer.EndDate);
-                                if (building.IsResourceBuilding())
-                                {
-                                    colony.UpdateResourceProduction(db, timer.EndDate);
-                                }
+                                CommandPortal.Send(command2);
+
                                 break;
 
                             

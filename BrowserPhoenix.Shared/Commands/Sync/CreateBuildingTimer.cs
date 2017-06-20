@@ -7,7 +7,7 @@ using System.Web;
 namespace BrowserPhoenix.Shared.Commands.Sync
 {
     [Serializable]
-    public class CreateBuildingCommand : BaseCommand, ICommand
+    public class CreateBuildingTimer : BaseCommand, ICommand
     {
         public Int32 XCord { get; set; }
         public Int32 YCord { get; set; }

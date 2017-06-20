@@ -126,8 +126,8 @@ namespace BrowserPhoenix.Shared.Domain
         public void UpdateResourceProduction(Database db, DateTime timeOfHappening)
         {
             var buildings = Building.GetByColonyId(db, this.Id);
-
-            var resourceBuildings = buildings.Where(x => x.IsResourceBuilding());
+            
+            var resourceBuildings = buildings.Where(x => x.IsResourceBuilding == true).ToList();
 
             this.Resources.RecalculateResourceProduction(db, timeOfHappening, resourceBuildings);
         }
