@@ -47,7 +47,7 @@ namespace BrowserPhoenix.Shared.Domain
             return " LEFT JOIN timer ON troop.id = timer.ref_id and timer.ref_type = 30";
         }
 
-        public static IEnumerable<Troop> GetByColonyId(Database db, Int64 id, Boolean? withBuildTimer = false)
+        public static IEnumerable<Troop> GetByColonyId(Database db, Int64 id)
         {
             var troops = db.Fetch<Troop, Colony, Timer>(
                     Sql.Builder
@@ -60,14 +60,27 @@ namespace BrowserPhoenix.Shared.Domain
             return troops;
         }
 
-        public static Troop GetInactiveTroopType(Database db, Int64 colony_id, TroopType type)
+        public static TroopCollection GetInactiveTroopsByColony(Database db, Int64 colonyId)
         {
             var troops = db.Fetch<Troop, Colony, Timer>(
                     Sql.Builder
                     .Append("SELECT * FROM troop")
                     .Append(Troop.JoinColony())
                     .Append(Troop.JoinTimer())
-                    .Append("WHERE troop.colony_id =@0 ", colony_id)
+                    .Append("WHERE troop.colony_id =@0 ", colonyId)
+                    );
+
+            return TroopCollection.Create(troops);
+        }
+
+        public static Troop GetInactiveTroopByType(Database db, Int64 colonyId, TroopType type)
+        {
+            var troops = db.Fetch<Troop, Colony, Timer>(
+                    Sql.Builder
+                    .Append("SELECT * FROM troop")
+                    .Append(Troop.JoinColony())
+                    .Append(Troop.JoinTimer())
+                    .Append("WHERE troop.colony_id =@0 ", colonyId)
                     .Append(" AND troop.type=@0", type)
                     );
 

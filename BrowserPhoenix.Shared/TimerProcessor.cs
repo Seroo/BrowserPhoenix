@@ -40,7 +40,12 @@ namespace BrowserPhoenix.Shared
 
                                 break;
 
-                            
+                            case TimerType.CreateTroop:
+
+                                var troopType = timer.AdditionalDataCreateTroop();
+                                var inactiveTroop = Troop.GetInactiveTroopByType(db, building.ColonyId, troopType);
+                                inactiveTroop.AddUnit(db, timer.EndDate);
+                                break;
 
                         }
                     }
@@ -51,14 +56,11 @@ namespace BrowserPhoenix.Shared
 
                 case RefType.Troop:
 
-                    var troop = Troop.GetById(db, timer.RefId);
+                   
 
                     switch(timer.Type)
                     {
-                        case TimerType.CreateTroop:
-
-                            troop.AddUnit(db, timer.EndDate);
-                            break;
+                        
                     }
                     
                     break;

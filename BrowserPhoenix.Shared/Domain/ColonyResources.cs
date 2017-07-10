@@ -137,6 +137,10 @@ namespace BrowserPhoenix.Shared.Domain
                     case BuildingType.AphidBreed:
                         SugarProduction += BuildingHelper.GetProduction(building);
                         break;
+
+                    case BuildingType.QueenLair:
+                        LarvaeProduction += BuildingHelper.GetProduction(building);
+                        break;
                 }
             }
 

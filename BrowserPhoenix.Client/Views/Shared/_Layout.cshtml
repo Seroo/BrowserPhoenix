@@ -99,7 +99,9 @@
                 // add one second so that the count down starts at the full duration
                 // example 05:00 not 04:59
                 start = Date.now() + 1000;
+                console.log("hae!");
             }
+            console.log(diff);
         };
         // we don't want to wait a full second before the timer starts
         timer();
@@ -113,15 +115,15 @@
                         var time = $(this).attr('time');
                         var display = $(this);
                         startTimer(time, display);
-                    });
+                });
 
-                    window.setInterval(function() {
+                window.setInterval(function() {
 
                     $('.production').each(function() {
-                            var production = parseFloat($(this).attr('production').replace(",", "."));
-                            var stored = parseFloat($(this).attr('stored').replace(",", "."));
+                        var production = parseFloat($(this).attr('production').replace(",", "."));
+                        var stored = parseFloat($(this).attr('stored').replace(",", "."));
 
-                            stored = stored + production;
+                        stored = stored + production;
                         $(this).attr('stored', stored);
 
                             var userStored = toFixed_norounding(stored, 0)
@@ -129,7 +131,7 @@
 
                         $('#stored-' + type).html(userStored);
 
-                        })
+                    })
 
                 }, 10000);
             };

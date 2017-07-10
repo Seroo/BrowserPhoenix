@@ -52,8 +52,8 @@
     <Reference Include="Npgsql, Version=3.2.2.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.2.2\lib\net451\Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="PetaPoco, Version=5.1.244.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PetaPoco.Core.Compiled.5.1.244\lib\net45\PetaPoco.dll</HintPath>
+    <Reference Include="PetaPoco, Version=5.1.259.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PetaPoco.Core.Compiled.5.1.259\lib\net45\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -216,6 +216,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AttackModel.cs" />
     <Compile Include="Models\ColonyCellModel.cs" />
     <Compile Include="Models\BroodLairModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -243,6 +244,7 @@
     <Content Include="Content\Images\Buildings\building-trooppool.png" />
     <Content Include="Content\Images\Buildings\building-warehouse.png" />
     <Content Include="Content\Images\Buildings\empty.png" />
+    <Content Include="Content\Images\dirt_background_active.png" />
     <Content Include="Content\Images\Level\level-0.png" />
     <Content Include="Content\Images\Level\level-1.png" />
     <Content Include="Content\Images\Level\level-10.png" />
@@ -265,7 +267,7 @@
     <Content Include="Content\Images\Level\level-8.png" />
     <Content Include="Content\Images\Level\level-9.png" />
     <Content Include="Content\Images\mushroom_farm.png" />
-    <Content Include="Content\Images\no_building.png" />
+    <Content Include="Content\Images\dirt_background.png" />
     <Content Include="Content\Images\Resources\resource-chitin.png" />
     <Content Include="Content\Images\Resources\resource-food.png" />
     <Content Include="Content\Images\Resources\resource-larvae.png" />

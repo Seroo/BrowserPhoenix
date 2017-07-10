@@ -46,6 +46,22 @@ namespace BrowserPhoenix.Controllers
             
         }
 
+        public ActionResult GetCell(Int64 id, Int32 x, Int32 y)
+        {
+            using (var db = DatabasePortal.Open())
+            {
+                var building = Building.GetByColonyCell(db, id, x, y);
+                var result = new ColonyCellModel(x, y, building);
+
+                if (building == null)
+                    return View("CellEmpty", building);                
+                else
+                    return View("CellBuilding", result);                
+            }
+        }
+
+        
+
         [Authorize]
         public ActionResult Create(Int32 x, Int32 y)
         {

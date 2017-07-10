@@ -99,23 +99,27 @@ body {
     width: 70px;
     padding: 1px;
     float: left;
-    cursor: pointer
+    cursor: pointer;
+    background: url("/Content/Images/dirt_background.png")
 }
 
-.cell.active {
-    width:68;
-    height:68;
-    border: 1px solid red;
-    padding: 0px;
-}
+    .cell.active {
+        width: 68;
+        height: 68;
+        border: 1px solid red;
+        padding: 0px;
+        background: url("/Content/Images/dirt_background_active.png")
+    }
 
 .cell.owned {
     background-color: green;
 }
 
-.cell:hover {
-    border: 1px solid red;
-}
+    .cell:hover {
+        border: 1px solid red;
+        padding: 0px;
+        background: url("/Content/Images/dirt_background_active.png")
+    }
 
 .partial-context-menu {
     

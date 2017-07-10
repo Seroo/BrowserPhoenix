@@ -33,12 +33,29 @@ namespace BrowserPhoenix.Shared.Domain
 
         [Column("ref_id")]
         public Int64 RefId { get; set; }
+
+        [Column("additional_data")]
+        public String AdditionalData { get; set; }        
         
         
         //hier könnte man dann noch felder hinzufügen von möglichen refs
         // z.b. colony oder building
-        
-        public static Timer Create(Database portal, Int64 playerId, TimerType type, RefType refType, Int64 refId, DateTime endDate)
+
+        public TroopType AdditionalDataCreateTroop()
+        {
+            if(this.Type == TimerType.CreateTroop)
+            {
+                return (TroopType)Enum.Parse(typeof(TroopType), this.AdditionalData);
+            }
+            else
+            {
+                //exception
+                return 0;
+            }
+           
+        }
+
+        public static Timer Create(Database portal, Int64 playerId, TimerType type, RefType refType, Int64 refId, DateTime endDate, String additionalData = "")
         {
             var result = new Timer();
             result.Type = type;
@@ -47,6 +64,7 @@ namespace BrowserPhoenix.Shared.Domain
             result.CreateDate = DateTime.Now;
             result.EndDate = endDate;
             result.PlayerId = playerId;
+            result.AdditionalData = additionalData;
 
             portal.Save(result);
 

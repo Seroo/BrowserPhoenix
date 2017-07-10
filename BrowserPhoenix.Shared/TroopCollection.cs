@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrowserPhoenix.Shared.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,6 +24,80 @@ namespace BrowserPhoenix.Shared
         public Int32 BullAnt { get; set; }
         public Int32 Nemesis { get; set; }
         public Int32 SwarmGuard { get; set; }
+
+        public static TroopCollection Create(IEnumerable<Troop> troops)
+        {
+            var result = new TroopCollection();
+
+            foreach(var troop in troops)
+            {
+                var type = troop.Type;
+                switch (type)
+                {
+                    case TroopType.Queen:
+                        result.Queen = troop.Amount;
+                        break;
+
+                    case TroopType.Worker:
+                        result.Worker = troop.Amount;
+                        break;
+
+                    case TroopType.Warrior:
+                        result.Warrior = troop.Amount;
+                        break;
+
+                    case TroopType.HeavyWarrior:
+                        result.HeavyWarrior = troop.Amount;
+                        break;
+
+                    case TroopType.Scout:
+                        result.Scout = troop.Amount;
+                        break;
+
+                    case TroopType.Marksman:
+                        result.Marksman = troop.Amount;
+                        break;
+
+                    case TroopType.Hunter:
+                        result.Hunter = troop.Amount;
+                        break;
+
+                    case TroopType.FireAnt:
+                        result.FireAnt = troop.Amount;
+                        break;
+
+                    case TroopType.Reaper:
+                        result.Reaper = troop.Amount;
+                        break;
+
+                    case TroopType.TowerGuard:
+                        result.TowerGuard = troop.Amount;
+                        break;
+
+                    case TroopType.Guard:
+                        result.Guard = troop.Amount;
+                        break;
+
+                    case TroopType.BullAnt:
+                        result.BullAnt = troop.Amount;
+                        break;
+
+                    case TroopType.Nemesis:
+                        result.Nemesis = troop.Amount;
+                        break;
+
+                    case TroopType.SwarmGuard:
+                        result.SwarmGuard = troop.Amount;
+                        break;
+
+                    default:
+
+                        break;
+                }
+               
+            }
+            return result;
+        }
 
         public float GetTroop(TroopType type)
         {
@@ -65,10 +140,10 @@ namespace BrowserPhoenix.Shared
                     return BullAnt;
 
                 case TroopType.Nemesis:
-                    return BullAnt;
+                    return Nemesis;
 
                 case TroopType.SwarmGuard:
-                    return BullAnt;
+                    return SwarmGuard;
 
                 default:
                     return 1000;

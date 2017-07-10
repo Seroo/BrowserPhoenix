@@ -17,6 +17,9 @@
     #map_down {
         float: left;
     }
+    .cell {
+        background: url("/Content/Images/dirt_background.png")
+    }
 </style>
 <div id="x_cord" style="display:none;"></div>
 <div id="y_cord" style="display:none;"></div>
@@ -63,7 +66,7 @@
 
 @section ContextMenu{
     <div id="context-enemy" class="partial-context-menu">
-        <a>Attack</a><br />
+        <a onclick="gotoAttack()">Attack</a><br />
     </div>
     <div id="context-owned" class="partial-context-menu">
         <a onclick="gotoColony()">Goto</a>
@@ -104,6 +107,14 @@
     {
         var id = $("#selected_colony").html();
         location.href = "/colony/index/" + id;
+    }
+
+    function gotoAttack()
+    {
+        var x = $("#x_cord").html();
+        var y = $("#y_cord").html();
+
+        location.href = "/troop/attack?xCord=" + x + "&yCord=" + y;
     }
 
     function createColony()

@@ -19,8 +19,7 @@
     <div class="troop-cell">
        
         @{
-            var troopCount = Model.Troops.Where(x => x.Type == type).Sum(x => x.Amount);
-            var troopInBuild = Model.Troops.FirstOrDefault(x => x.Type == type && x.HasTimer());
+            var troopCount = Model.Troops.GetTroop(type);
 
             @(type.ToName() + "    " + @troopCount)
 
@@ -50,9 +49,17 @@
 
                 }
             </div>
-            if (troopInBuild != null)
+            if (Model.Building.HasTimer())
             {
-                <span class="countdown" time="@Math.Round( troopInBuild.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
+                if (Model.Building.Timer.Type == TimerType.CreateTroop)
+                {
+                    var troopInBuildType = Model.Building.Timer.AdditionalDataCreateTroop();
+                    if (troopInBuildType == type)
+                    {
+                        <span class="countdown" time="@Math.Round( Model.Building.Timer.TimeTillEnd().TotalSeconds, 0 )"></span>
+                    }
+
+                }
             }
             <br />
             <button onclick="createTroop('@type')" type="button">Breed</button>
@@ -105,6 +112,17 @@
     function createTroop(type) {
         var buildingId = $('#building_id').html();
 
-        $.get("/troop/create/" + buildingId + "/?type=" + type);
+        $.get("/troop/create/" + buildingId + "/?type=" + type, function (xhr) {
+            if (xhr != "") {
+                toastr.options = {
+                    tapToDismiss: true,
+                    positionClass: "toast-top-center"
+                };
+                toastr.warning(xhr);
+            }
+            else {
+                location.reload();
+            }
+        });
     }
 </script>

@@ -21,7 +21,7 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
                 var building = Building.GetById(db, BuildingId);
 
-                var troop = Troop.GetInactiveTroopType(db, ColonyId, Type);
+                var troop = Troop.GetInactiveTroopByType(db, ColonyId, Type);
 
                 if(troop == null)
                 {
@@ -36,7 +36,10 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
                 var endDate = CreateDate.Add(buildTime);
 
-                Timer.Create(db, PlayerId, TimerType.CreateTroop, RefType.Building, BuildingId, endDate);
+
+                //the timer gets created but has no information which troops should be build..
+                //need to look into a way to pass this information
+                Timer.Create(db, PlayerId, TimerType.CreateTroop, RefType.Building, BuildingId, endDate, troop.Type.ToString());
             }
         }
     }

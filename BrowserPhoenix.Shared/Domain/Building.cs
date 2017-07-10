@@ -76,12 +76,35 @@ namespace BrowserPhoenix.Shared.Domain
             return buildingList;
         }
 
+        public static Building GetByColonyCell(Database db, Int64 id, Int32 x, Int32 y)
+        {
+            var buildings = db.Query<Building, Colony, Timer>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Building")
+                    .Append(Building.JoinColony())
+                    .Append(Building.JoinTimer())
+                    .Append("WHERE building.colony_id =@0 ", id)
+                    .Append("And building.x_cord = @0 ", x)
+                    .Append("And building.y_cord = @0 ", y)
+                    );
+
+            if(buildings != null && buildings.Any())
+            {
+                return buildings.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static Building GetById(Database db, Int64 id)
         {
-            var buildingList = db.Fetch<Building, Colony>(
+            var buildingList = db.Fetch<Building, Colony, Timer>(
                     Sql.Builder
                      .Append("SELECT * FROM Building")
                     .Append(Building.JoinColony())
+                    .Append(Building.JoinTimer())
                     .Append("WHERE building.id =@0 ", id)
                     );
 
@@ -124,7 +147,8 @@ namespace BrowserPhoenix.Shared.Domain
 
         public Boolean HasTimer()
         {
-            return this.Timer.Id != 0;
+
+            return this.Timer != null && this.Timer.Id != 0;
         }
 
        

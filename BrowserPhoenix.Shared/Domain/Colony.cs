@@ -95,6 +95,18 @@ namespace BrowserPhoenix.Shared.Domain
                     );
         }
 
+        public static IEnumerable<Tuple<Int64, String>> GetNameTupleList(Database db, Int64 playerId)
+        {
+            var result = db.Fetch<Colony>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Colony")
+                    .Append(Colony.JoinPlayer())
+                    .Append("WHERE player.id =@0 ", playerId)
+                    );
+
+            return result.Select(x => new Tuple<Int64, String>(x.Id, x.Name));
+        }
+
         public static Colony Create(Database portal, Int64 playerId, Int32 xCord, Int32 yCord)
         {
             var result = new Colony();

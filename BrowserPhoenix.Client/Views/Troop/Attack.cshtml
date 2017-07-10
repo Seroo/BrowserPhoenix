@@ -1,7 +1,71 @@
 ﻿
-@{
-    ViewBag.Title = "Attack";
-}
+@model AttackModel
+<style>
+    .troop-cell {
+        width: 175px;
+        height: 75px;
+        border: 1px solid red;
+        float: left;
+        margin: 6px;
+    }
+</style>
 
 <h2>Attack</h2>
+<form>
+    <div>
+        @*starting side*@
+        <div style="float:left;">
+            <select>
+                @foreach(var colony in Model.PlayerColonies)
+                {
+                    <option @(colony.Item1 == Player.Current.Colony.Id ? "selected=selected" : "") value="@colony.Item1">@colony.Item2</option>
+                }
+            </select>
+        </div>
+        @*target side*@
+        <div style="float:right;">
+            X:<input type="text" name="xCord" value="@(Model.TargetX)"/>
+            <br />
+            Y:<input type="text" name="yCord" value="@(Model.TargetY)" />
+            <br />
+            <div>
+                @if (!String.IsNullOrWhiteSpace(Model.TargetName))
+                {
+                    @Model.TargetName
+                }
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <br />
+    <div>
+        @foreach (var type in (TroopType[])Enum.GetValues(typeof(TroopType)))
+        {
+            <div class="troop-cell">    
+                @{
+                    var troopCount = Model.AvailableTroops.GetTroop(type);
 
+                    @type.ToName()
+
+                    <br />
+                    <br />
+
+
+                    <input type="text" value="0" style="width: 40px; display:inline" /> @(" / " + troopCount)
+                }
+            </div>
+        }
+        <div style="clear:both;"></div>
+    </div>
+    <br />
+    <input type="submit" value="Attack" />
+</form>
+
+<script>
+
+    function createTroop(type) {
+        var buildingId = $('#building_id').html();
+
+        $.get("/troop/create/" + buildingId + "/?type=" + type);
+    }
+</script>
