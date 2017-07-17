@@ -25,7 +25,7 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
                 if(troop == null)
                 {
-                    troop = Troop.Create(db, this.CreateDate, BuildingId, building.ColonyId, Type);
+                    troop = Troop.Create(db, this.CreateDate, BuildingId, building.ColonyId, Type, 0);
                 }
                                 
                 var buildTime = TroopHelper.GetBuildTime(troop.Type, building.Level);

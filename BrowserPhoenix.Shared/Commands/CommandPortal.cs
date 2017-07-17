@@ -45,6 +45,7 @@ namespace BrowserPhoenix.Shared.Commands
             commandProcessors.Add(typeof(RecalculateResourcesCommand), new CommandProcessor<RecalculateResourcesCommand>());
             commandProcessors.Add(typeof(CreateTroopCommand), new CommandProcessor<CreateTroopCommand>());
             commandProcessors.Add(typeof(LevelUpBuildingCommand), new CommandProcessor<LevelUpBuildingCommand>());
+            commandProcessors.Add(typeof(CreateTroopMovementCommand), new CommandProcessor<CreateTroopMovementCommand>());
             //
 
             //das hier muss auch statis irgenwo sein

@@ -164,6 +164,12 @@ namespace BrowserPhoenix.Shared
 
         }
 
+        public static TimeSpan GetMoveTime(TroopCollection troops, Int32 startX, Int32 startY, Int32 targetX, Int32 targetY)
+        {
+            //placeholder
+            return new TimeSpan(0, 30, 50);
+        }
+
         public static float GetMultiplikator(Int32 level, float percentage)
         {
             if (level == 1)

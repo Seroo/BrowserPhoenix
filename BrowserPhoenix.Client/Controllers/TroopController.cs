@@ -47,32 +47,42 @@ namespace BrowserPhoenix.Client.Controllers
         {
             using (var db = DatabasePortal.Open())
             {
-                var result = new AttackModel();
-                result.StartX = Player.Current.Colony.XCord;
-                result.StartY = Player.Current.Colony.YCord;
-                result.PlayerColonies = Colony.GetNameTupleList(db, Player.Current.Id);
-                if (xCord.HasValue && yCord.HasValue)
-                {
-                    result.TargetX = xCord.Value;
-                    result.TargetY = yCord.Value;
-
-                    //todo
-                    //check the target coordinates for colonies and or npc stuff
-                    result.TargetName = "uff ae town";
-                    result.TargetId = 14;
-                }
-                   
-                result.AvailableTroops = Troop.GetInactiveTroopsByColony(db, Player.Current.Colony.Id);
-                
+                var result = new AttackModel(db, xCord, yCord);
+               
 
                 return View(result);
             }
         }
 
         [HttpPost]
-        public ActionResult Attack(Int32 x, Int32 y, TroopCollection troops)
+        public ActionResult Attack(Int32 xCord, Int32 yCord, TroopCollection troops)
         {
-            return View();
+            using (var db = DatabasePortal.Open())
+            {
+                var result = new AttackModel(db, xCord, yCord);
+
+                if (!result.AvailableTroops.HasMoreThan(troops))
+                {
+                    return Content("jo fehler jo");// View(result);
+                    //error message
+                }
+
+                var command = new CreateTroopMovementCommand();
+                command.ColonyId = Player.Current.Colony.Id;
+                command.PlayerId = Player.Current.Id;
+                command.SelectedTroops = troops;
+                command.StartX = Player.Current.Colony.XCord;
+                command.StartY = Player.Current.Colony.YCord;
+                command.CreateDate = DateTime.Now;
+                command.TargetX = xCord;
+                command.TargetY = yCord;
+
+                CommandPortal.Send(command);
+
+                return View(result);
+            }
+
+            
         }
     }
 }

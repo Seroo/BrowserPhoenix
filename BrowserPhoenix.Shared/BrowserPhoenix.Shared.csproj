@@ -91,9 +91,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingHelper.cs" />
+    <Compile Include="Commands\Sync\CreateTroopMoveCommand.cs" />
     <Compile Include="Commands\Sync\LevelUpBuildingCommand.cs" />
     <Compile Include="Commands\Sync\TroopBuildingCommand.cs" />
     <Compile Include="Domain\Troop.cs" />
+    <Compile Include="Domain\TroopMove.cs" />
     <Compile Include="TroopCollection.cs" />
     <Compile Include="TroopHelper.cs" />
     <Compile Include="TroopType.cs" />
@@ -113,7 +115,6 @@
     <Compile Include="Commands\Sync\CreateColonyCommand.cs" />
     <Compile Include="Commands\Sync\GetPointsCommand.cs" />
     <Compile Include="Commands\CommandType.cs" />
-    <Compile Include="Complex.cs" />
     <Compile Include="DatabasePortal.cs" />
     <Compile Include="Domain\Building.cs" />
     <Compile Include="Domain\Colony.cs" />

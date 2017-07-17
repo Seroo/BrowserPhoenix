@@ -37,6 +37,9 @@ namespace BrowserPhoenix.Shared.Domain
         [Column("timer_id")]
         public Timer Timer { get; set; }
 
+        [Column("is_busy")]
+        public Boolean IsBusy { get; set; }
+
         public static String JoinColony()
         {
             return " LEFT JOIN colony ON troop.colony_id = colony.id ";
@@ -68,6 +71,7 @@ namespace BrowserPhoenix.Shared.Domain
                     .Append(Troop.JoinColony())
                     .Append(Troop.JoinTimer())
                     .Append("WHERE troop.colony_id =@0 ", colonyId)
+                    .Append("AND troop.is_busy =@0 ", false)
                     );
 
             return TroopCollection.Create(troops);
@@ -81,7 +85,8 @@ namespace BrowserPhoenix.Shared.Domain
                     .Append(Troop.JoinColony())
                     .Append(Troop.JoinTimer())
                     .Append("WHERE troop.colony_id =@0 ", colonyId)
-                    .Append(" AND troop.type=@0", type)
+                    .Append(" AND troop.type=@0 ", type)
+                    .Append(" AND troop.is_busy =@0 ", false)
                     );
 
             if(troops.Any())
@@ -108,7 +113,7 @@ namespace BrowserPhoenix.Shared.Domain
             return troop;
         }
         
-        public static Troop Create(Database portal, DateTime createDate, Int64 buildingId, Int64 colonyId, TroopType type)
+        public static Troop Create(Database portal, DateTime createDate, Int64 buildingId, Int64 colonyId, TroopType type, Int32 amount, Boolean isBusy = false)
         {
             var result = new Troop();
             
@@ -117,8 +122,8 @@ namespace BrowserPhoenix.Shared.Domain
             result.Type = type;
             
             result.CreateDate = createDate;
-
-            result.Amount = 0;
+            result.IsBusy = isBusy;
+            result.Amount = amount;
 
             portal.Save(result);
 
@@ -130,7 +135,14 @@ namespace BrowserPhoenix.Shared.Domain
             this.Amount = this.Amount + 1;
 
             portal.Save(this);
-        }   
+        }
+
+        public void AddTimer(Database portal, Timer timer)
+        {
+            this.Timer = timer;
+
+            portal.Save(this);
+        }
 
 
         public Boolean HasTimer()

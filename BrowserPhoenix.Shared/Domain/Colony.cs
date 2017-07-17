@@ -167,6 +167,15 @@ namespace BrowserPhoenix.Shared.Domain
 
             colonyResources.RemoveResources(db, resources);
         }
+
+        public void RemoveTroop(Database db, TroopType type, Int32 amount)
+        {
+            var inactiveTroop = Troop.GetInactiveTroopByType(db, this.Id, type);
+
+            inactiveTroop.Amount = inactiveTroop.Amount - amount;
+
+            db.Save(inactiveTroop);
+        }
     }
 
 }

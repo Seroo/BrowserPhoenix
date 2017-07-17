@@ -6,10 +6,9 @@ using System.Web;
 
 namespace BrowserPhoenix.Shared
 {
+    [Serializable]
     public class TroopCollection
     {
-      
-
         public Int32 Queen { get; set; }
         public Int32 Worker { get; set; }
         public Int32 Warrior { get; set; }
@@ -24,6 +23,53 @@ namespace BrowserPhoenix.Shared
         public Int32 BullAnt { get; set; }
         public Int32 Nemesis { get; set; }
         public Int32 SwarmGuard { get; set; }
+
+        public IEnumerable<Troop> GetTroops()
+        {
+            var result = new List<Troop>();
+
+            if (this.Queen != 0)
+                result.Add(new Troop() { Type = TroopType.Queen, Amount = this.Queen });
+
+            if (this.Worker != 0)
+                result.Add(new Troop() { Type = TroopType.Worker, Amount = this.Worker });
+
+            if (this.Warrior != 0)
+                result.Add(new Troop() { Type = TroopType.Warrior, Amount = this.Warrior });
+
+            if (this.HeavyWarrior != 0)
+                result.Add(new Troop() { Type = TroopType.HeavyWarrior, Amount = this.HeavyWarrior });
+
+            if (this.Scout != 0)
+                result.Add(new Troop() { Type = TroopType.Scout, Amount = this.Scout });
+
+            if (this.Marksman != 0)
+                result.Add(new Troop() { Type = TroopType.Marksman, Amount = this.Marksman });
+
+            if (this.Hunter != 0)
+                result.Add(new Troop() { Type = TroopType.Hunter, Amount = this.Hunter });
+
+            if (this.FireAnt != 0)
+                result.Add(new Troop() { Type = TroopType.FireAnt, Amount = this.FireAnt });
+
+            if (this.Reaper != 0)
+                result.Add(new Troop() { Type = TroopType.Reaper, Amount = this.Reaper });
+
+            if (this.TowerGuard != 0)
+                result.Add(new Troop() { Type = TroopType.TowerGuard, Amount = this.TowerGuard });
+
+            if (this.BullAnt != 0)
+                result.Add(new Troop() { Type = TroopType.BullAnt, Amount = this.BullAnt });
+
+            if (this.Nemesis != 0)
+                result.Add(new Troop() { Type = TroopType.Nemesis, Amount = this.Nemesis });
+
+            if (this.SwarmGuard != 0)
+                result.Add(new Troop() { Type = TroopType.SwarmGuard, Amount = this.SwarmGuard });
+
+
+            return result;
+        }
 
         public static TroopCollection Create(IEnumerable<Troop> troops)
         {
@@ -97,6 +143,52 @@ namespace BrowserPhoenix.Shared
                
             }
             return result;
+        }
+
+        public Boolean HasMoreThan(TroopCollection collection)
+        {
+            var result = true;
+
+            if (this.Queen < collection.Queen)
+                result = false;
+
+            if (this.Worker < collection.Worker)
+                result = false;
+
+            if (this.Warrior < collection.Warrior)
+                result = false;
+
+            if (this.HeavyWarrior < collection.HeavyWarrior)
+                result = false;
+
+            if (this.Scout < collection.Scout)
+                result = false;
+
+            if (this.Marksman < collection.Marksman)
+                result = false;
+
+            if (this.Hunter < collection.Hunter)
+                result = false;
+
+            if (this.FireAnt < collection.FireAnt)
+                result = false;
+
+            if (this.Reaper < collection.Reaper)
+                result = false;
+
+            if (this.TowerGuard < collection.TowerGuard)
+                result = false;
+
+            if (this.BullAnt < collection.BullAnt)
+                result = false;
+
+            if (this.Nemesis < collection.Nemesis)
+                result = false;
+
+            if (this.SwarmGuard < collection.SwarmGuard)
+                result = false;
+
+            return result;            
         }
 
         public float GetTroop(TroopType type)
