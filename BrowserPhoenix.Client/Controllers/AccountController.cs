@@ -60,6 +60,14 @@ namespace BrowserPhoenix.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+
+        
+            foreach(var user in UserManager.Users)
+            {
+                var etst = user;
+            }
+
+
             return View();
         }
 

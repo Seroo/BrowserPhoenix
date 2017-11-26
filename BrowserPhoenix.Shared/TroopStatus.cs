@@ -7,13 +7,10 @@ using System.Web;
 namespace BrowserPhoenix.Shared
 {
     [Serializable]
-    public enum RefType
+    public enum TroopStatus
     {
-        None = 100,
-        Colony = 10,
-        Building = 20,
-        Troop = 30,
-        TroopMovement = 40
-        
+        Idle = 0,
+        Busy = 10,       
+        Employed = 20
     }
 }

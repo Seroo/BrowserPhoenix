@@ -63,26 +63,27 @@ namespace BrowserPhoenix.Client.Controllers
 
                 if (!result.AvailableTroops.HasMoreThan(troops))
                 {
-                    return Content("jo fehler jo");// View(result);
+                    return Content("jo fehler jo nich genug truppen");// View(result);
                     //error message
                 }
 
-                var command = new CreateTroopMovementCommand();
-                command.ColonyId = Player.Current.Colony.Id;
-                command.PlayerId = Player.Current.Id;
-                command.SelectedTroops = troops;
-                command.StartX = Player.Current.Colony.XCord;
-                command.StartY = Player.Current.Colony.YCord;
-                command.CreateDate = DateTime.Now;
-                command.TargetX = xCord;
-                command.TargetY = yCord;
+            
+                var command = new CreateTroopMovementCommand()
+                {
+                    PlayerId = Player.Current.Id,
+                    SelectedTroops = troops,
+                    CreateDate = DateTime.Now,
+                    TargetX = xCord,
+                    TargetY = yCord,
+                    Type = TroopMovementType.Attack,
+                    ColonyId = Player.Current.Colony.Id
+                };
 
                 CommandPortal.Send(command);
 
+
                 return View(result);
             }
-
-            
         }
     }
 }

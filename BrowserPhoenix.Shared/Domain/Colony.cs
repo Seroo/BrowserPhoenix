@@ -95,6 +95,19 @@ namespace BrowserPhoenix.Shared.Domain
                     );
         }
 
+        public static Colony GetByCoordinates(Database db, Int32 x, Int32 y)
+        {
+            var colonyList = db.Fetch<Colony>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Colony")
+                    .Append("WHERE Colony.x_cord =@0 ", x)
+                    .Append("And Colony.y_cord =@0 ", y)
+                    );
+
+            return colonyList.FirstOrDefault();
+        }
+
+
         public static IEnumerable<Tuple<Int64, String>> GetNameTupleList(Database db, Int64 playerId)
         {
             var result = db.Fetch<Colony>(
@@ -107,7 +120,7 @@ namespace BrowserPhoenix.Shared.Domain
             return result.Select(x => new Tuple<Int64, String>(x.Id, x.Name));
         }
 
-        public static Colony Create(Database portal, Int64 playerId, Int32 xCord, Int32 yCord)
+        public static Colony Create(Database portal, Int64 playerId, String coloynName, Int32 xCord, Int32 yCord)
         {
             var result = new Colony();
             
@@ -115,6 +128,7 @@ namespace BrowserPhoenix.Shared.Domain
             result.XCord = xCord;
             result.YCord = yCord;
             result.CreateDate = DateTime.Now;
+            result.Name = coloynName;
             
 
             var resources = ColonyResource.Create(portal);
@@ -168,14 +182,37 @@ namespace BrowserPhoenix.Shared.Domain
             colonyResources.RemoveResources(db, resources);
         }
 
-        public void RemoveTroop(Database db, TroopType type, Int32 amount)
+        public Troop CreateMovingTroop(Database db, TroopType type, Int32 amount)
         {
             var inactiveTroop = Troop.GetInactiveTroopByType(db, this.Id, type);
 
             inactiveTroop.Amount = inactiveTroop.Amount - amount;
 
             db.Save(inactiveTroop);
+
+            return Troop.Create(db, CreateDate, 0, 0, type, amount, TroopStatus.Busy);
+
         }
+
+        public void ReturnMovingTroop(Database db, IEnumerable <Troop> troops)
+        {
+            foreach (var troop in troops)
+            {
+                var inactiveTroop = Troop.GetInactiveTroopByType(db, this.Id, troop.Type);
+                if(inactiveTroop == null)
+                {
+                    //WTF!= jemand hat gecheatet!!!
+                    var testpoint = "";
+                }
+
+                inactiveTroop.Amount += troop.Amount;
+
+                db.Save(inactiveTroop);
+                db.Delete(troop);
+            }
+        }
+
+
     }
 
 }

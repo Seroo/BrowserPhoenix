@@ -7,19 +7,22 @@ using System.Web;
 namespace BrowserPhoenix.Shared.Commands.Sync
 {
     [Serializable]
-    public class CreateColonyCommand : BaseCommand, ICommand
+    public class TroopReturnCommand : BaseCommand, ICommand
     {
         public Int32 XCord { get; set; }
         public Int32 YCord { get; set; }
-        public String ColonyName { get; set; }
+        public Int64[] TroopIds {get;set;}
+        
 
         public void Process()
         {
-            using (var portal = DatabasePortal.Open())
+            using (var db = DatabasePortal.Open())
             {
-                //check if field is available
+                var colony = Colony.GetByCoordinates(db, XCord, YCord);
 
-                Colony.Create(portal, PlayerId, ColonyName, XCord, YCord);
+                var troops = Troop.GetByIds(db, TroopIds);
+                colony.ReturnMovingTroop(db, troops);
+
             }
         }
     }

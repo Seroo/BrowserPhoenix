@@ -56,12 +56,7 @@ namespace BrowserPhoenix.Shared
 
                 case RefType.Troop:
 
-                   
-
-                    switch(timer.Type)
-                    {
-                        
-                    }
+                  
                     
                     break;
 
@@ -83,8 +78,47 @@ namespace BrowserPhoenix.Shared
                             break;
                     }
 
-                    
+                    break;
 
+                case RefType.TroopMovement:
+
+                    var movement = TroopMovement.GetById(db, timer.RefId);
+
+                    switch (movement.Type)
+                    {
+                        case TroopMovementType.Attack:
+
+                            var attackCommand = new CalculateFightCommand();
+                            attackCommand.TroopIds = movement.Troops;
+                            attackCommand.FightX = movement.TargetX;
+                            attackCommand.FightX = movement.TargetY;
+                            attackCommand.ReturnX = movement.StartX;
+                            attackCommand.ReturnY = movement.StartY;
+                            attackCommand.PlayerId = movement.PlayerId;
+                            CommandPortal.Send(attackCommand);
+
+                            db.Delete(movement);
+                            //check the target
+                            //? TroopCollection.Attack(target)?
+                            //does all the calculation stuff
+                            //kills ants on both sides and decidces how many resources you get if some are stolen  (and can hold with your ants)
+                            //returns troop collection
+
+
+                            break;
+
+                        case TroopMovementType.Return:
+
+                            var returnCommand = new TroopReturnCommand();
+                            returnCommand.TroopIds = movement.Troops;
+                            returnCommand.XCord = movement.TargetX;
+                            returnCommand.YCord = movement.TargetY;
+                            returnCommand.PlayerId = movement.PlayerId;
+
+                            CommandPortal.Send(returnCommand);
+                            db.Delete(movement);
+                            break;
+                    }
 
                     break;
             }

@@ -69,6 +69,7 @@ namespace BrowserPhoenix.Controllers
             command.XCord = x;
             command.YCord = y;
             command.PlayerId = Player.Current.Id;
+            command.ColonyName = Player.Current.Username + " colony";
 
             CommandPortal.Send(command);
 

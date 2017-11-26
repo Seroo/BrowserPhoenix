@@ -37,8 +37,8 @@ namespace BrowserPhoenix.Shared.Domain
         [Column("timer_id")]
         public Timer Timer { get; set; }
 
-        [Column("is_busy")]
-        public Boolean IsBusy { get; set; }
+        [Column("status")]
+        public TroopStatus Status { get; set; }
 
         public static String JoinColony()
         {
@@ -71,7 +71,7 @@ namespace BrowserPhoenix.Shared.Domain
                     .Append(Troop.JoinColony())
                     .Append(Troop.JoinTimer())
                     .Append("WHERE troop.colony_id =@0 ", colonyId)
-                    .Append("AND troop.is_busy =@0 ", false)
+                    .Append("AND troop.status=@0 ", TroopStatus.Idle)
                     );
 
             return TroopCollection.Create(troops);
@@ -86,17 +86,10 @@ namespace BrowserPhoenix.Shared.Domain
                     .Append(Troop.JoinTimer())
                     .Append("WHERE troop.colony_id =@0 ", colonyId)
                     .Append(" AND troop.type=@0 ", type)
-                    .Append(" AND troop.is_busy =@0 ", false)
+                    .Append(" AND troop.status =@0 ", TroopStatus.Idle)
                     );
-
-            if(troops.Any())
-            {
-                return troops.First();
-            }
-            else
-            {
-                return null;
-            }
+            return troops.FirstOrDefault();
+            
         }
         
         public static Troop GetById(Database db, Int64 id)
@@ -112,8 +105,20 @@ namespace BrowserPhoenix.Shared.Domain
 
             return troop;
         }
-        
-        public static Troop Create(Database portal, DateTime createDate, Int64 buildingId, Int64 colonyId, TroopType type, Int32 amount, Boolean isBusy = false)
+
+        public static IEnumerable<Troop> GetByIds(Database db, IEnumerable<Int64> troopIds)
+        {
+            var troops = db.Fetch<Troop, Colony>(
+                    Sql.Builder
+                    .Append("SELECT * FROM troop")
+                    .Append(Troop.JoinColony())
+                    .Append("WHERE troop.id in (@0) ", troopIds)
+                    );
+
+            return troops;
+        }
+
+        public static Troop Create(Database portal, DateTime createDate, Int64 buildingId, Int64 colonyId, TroopType type, Int32 amount, TroopStatus status = TroopStatus.Idle)
         {
             var result = new Troop();
             
@@ -122,7 +127,7 @@ namespace BrowserPhoenix.Shared.Domain
             result.Type = type;
             
             result.CreateDate = createDate;
-            result.IsBusy = isBusy;
+            result.Status = status;
             result.Amount = amount;
 
             portal.Save(result);

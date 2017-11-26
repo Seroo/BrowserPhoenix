@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TroopMovement>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<table cellspacing="5" style="width:100%">
+    <tr>
+        <th>Type</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Count</th>
+        <th>Arrival In</th>
+        <th>Arrival</th>
+        
+    </tr>
+    @foreach (var movement in Model)
+    {
+        var color = "black";
+        if (movement.Type == TroopMovementType.Attack)
+        {
+            color = "red";
+        }
+        else if (movement.Type == TroopMovementType.Return)
+        {
+            color = "blue";
+        }
+        else if (movement.Type == TroopMovementType.Assist)
+        {
+            color = "green";
+        }
+
+        var timeTillArrival = movement.ArrivalDate - DateTime.Now;
+        var ttaInSec = timeTillArrival.TotalSeconds;
+        <tr>
+            <td style="background-color:@color; color: white;">@movement.Type.ToString()</td>
+            <td>@("X:" + movement.StartX + " Y:" + movement.StartY)</td>
+            <td>@("X:" + movement.TargetX + " Y:" + movement.TargetY)</td>
+            <td>@movement.Count</td>
+            <td><span class="countdown" time="@Math.Round( ttaInSec, 0 )"></span></td>
+            <td>@movement.ArrivalDate</td>
+        </tr>
+        
+    }
+</table>
+
+
+

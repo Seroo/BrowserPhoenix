@@ -155,7 +155,7 @@ namespace BrowserPhoenix.Shared.Domain
             using (var db = DatabasePortal.Open())
             {
                 var random = new Random();
-                var colony = Colony.Create(db, this.Id, random.Next(1, 9), random.Next(1, 9));
+                var colony = Colony.Create(db, this.Id, this.Username + " Colony", random.Next(1, 9), random.Next(1, 9));
 
                 colony = Colony.GetById(db,colony.Id);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrowserPhoenix.Shared.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -164,10 +165,10 @@ namespace BrowserPhoenix.Shared
 
         }
 
-        public static TimeSpan GetMoveTime(TroopCollection troops, Int32 startX, Int32 startY, Int32 targetX, Int32 targetY)
+        public static TimeSpan GetMoveTime(IEnumerable<Troop> troops, Int32 startX, Int32 startY, Int32 targetX, Int32 targetY)
         {
             //placeholder
-            return new TimeSpan(0, 30, 50);
+            return new TimeSpan(0, 8, 30);
         }
 
         public static float GetMultiplikator(Int32 level, float percentage)
