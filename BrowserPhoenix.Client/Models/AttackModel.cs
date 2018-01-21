@@ -41,7 +41,7 @@ namespace BrowserPhoenix.Client.Models
                 this.TargetId = 14;
             }
 
-            this.AvailableTroops = Troop.GetInactiveTroopsByColony(db, Player.Current.Colony.Id);
+            this.AvailableTroops = Troop.GetInactiveTroopCollectionByColony(db, Player.Current.Colony.Id);
         }
     }
     

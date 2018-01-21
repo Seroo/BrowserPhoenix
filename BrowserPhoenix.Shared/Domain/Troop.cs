@@ -22,7 +22,7 @@ namespace BrowserPhoenix.Shared.Domain
 
         [Column("amount")]
         public Int32 Amount { get; set; }
-        
+
         [Column("building_id")]
         public Int64 BuildingId { get; set; }
 
@@ -39,6 +39,23 @@ namespace BrowserPhoenix.Shared.Domain
 
         [Column("status")]
         public TroopStatus Status { get; set; }
+
+        [Ignore]
+        public TroopDefenseValues Defense
+        {
+            get
+            {
+                return TroopHelper.GetDefense(this);
+            }
+        }
+        [Ignore]
+        public TroopAttackValues Attack
+        {
+            get
+            {
+                return TroopHelper.GetAttack(this);
+            }
+        }
 
         public static String JoinColony()
         {
@@ -63,7 +80,7 @@ namespace BrowserPhoenix.Shared.Domain
             return troops;
         }
 
-        public static TroopCollection GetInactiveTroopsByColony(Database db, Int64 colonyId)
+        public static TroopCollection GetInactiveTroopCollectionByColony(Database db, Int64 colonyId)
         {
             var troops = db.Fetch<Troop, Colony, Timer>(
                     Sql.Builder
@@ -75,6 +92,21 @@ namespace BrowserPhoenix.Shared.Domain
                     );
 
             return TroopCollection.Create(troops);
+        }
+
+
+        public static IEnumerable<Troop> GetInactiveTroopsByColony(Database db, Int64 colonyId)
+        {
+            var troops = db.Fetch<Troop, Colony, Timer>(
+                    Sql.Builder
+                    .Append("SELECT * FROM troop")
+                    .Append(Troop.JoinColony())
+                    .Append(Troop.JoinTimer())
+                    .Append("WHERE troop.colony_id =@0 ", colonyId)
+                    .Append("AND troop.status=@0 ", TroopStatus.Idle)
+                    );
+
+            return troops;
         }
 
         public static Troop GetInactiveTroopByType(Database db, Int64 colonyId, TroopType type)
@@ -154,8 +186,117 @@ namespace BrowserPhoenix.Shared.Domain
         {
             return this.Timer.Id != 0;
         }
+        
+        public Int32 CalculateSurvivorAgainst(Troop attacker)
+        {
+            var pierceDefValue = this.Defense.Pierce * this.Amount;
+            var bluntDefValue = this.Defense.Blunt * this.Amount;
+            var acidDefValue = this.Defense.Acid * this.Amount;
+            var slashDefValue = this.Defense.Slash * this.Amount;
 
-       
+            var pierceAttackValue = attacker.Attack.Pierce * attacker.Amount;
+            var bluntAttackValue = attacker.Attack.Blunt * attacker.Amount;
+            var acidAttackValue = attacker.Attack.Acid * attacker.Amount;
+            var slashAttackValue = attacker.Attack.Slash * attacker.Amount;
+
+
+            var pierceSurvivingDefense = pierceDefValue - pierceAttackValue;
+            var bluntSurivingDefense = bluntDefValue - bluntAttackValue;
+            var acidSurvivingDefense = acidDefValue - acidAttackValue;
+            var slashSurvivingDefense = slashDefValue - slashAttackValue;
+
+            var aliveAnts = this.Amount;
+            if (pierceSurvivingDefense < pierceDefValue)
+            {
+                //beispiel
+                //10 verteidiger mit je 2 schaden
+                //15 verteidiger mit je 2 def
+                //pierfDefValue = 30
+                //pierceSurvivingDefense = 10 (attacker hat 20 schaden)
+                //X = x - ( 30 - ( 10 / 2))
+                //x = x - (ALLE am lebenden - ( überlebende punkte / def = überlebende einheiten))
+
+                //aliveAnts = aliveAnts + (pierceDefValue - (pierceSurvivingDefense / this.Defense.Pierce));
+                aliveAnts = aliveAnts - ((pierceDefValue - pierceSurvivingDefense) / this.Defense.Pierce);
+            }
+
+            if (bluntSurivingDefense < bluntDefValue)
+            {
+                aliveAnts = aliveAnts - ((bluntDefValue - bluntSurivingDefense) / this.Defense.Blunt);
+            }
+
+            if (acidSurvivingDefense < acidDefValue)
+            {
+                aliveAnts = aliveAnts - ((acidDefValue - acidSurvivingDefense) / this.Defense.Acid);
+            }
+
+            if (slashSurvivingDefense < slashDefValue)
+            {
+                aliveAnts = aliveAnts - ((slashDefValue - slashSurvivingDefense) / this.Defense.Slash);
+            }
+
+            if (aliveAnts > 0)
+                return aliveAnts;
+            else
+                return 0;
+        }
+
+        public Int32 CalculateSurvivorad(Troop defender)
+        {
+            var pierceDefValue = defender.Defense.Pierce * defender.Amount;
+            var bluntDefValue = defender.Defense.Blunt * defender.Amount;
+            var acidDefValue = defender.Defense.Acid * defender.Amount;
+            var slashDefValue = defender.Defense.Slash * defender.Amount;
+
+            var pierceAttackValue = this.Attack.Pierce * this.Amount;
+            var bluntAttackValue = this.Attack.Blunt * this.Amount;
+            var acidAttackValue = this.Attack.Acid * this.Amount;
+            var slashAttackValue = this.Attack.Slash * this.Amount;
+
+
+            var pierceSurvivingDefense = pierceDefValue - pierceAttackValue;
+            var bluntSurivingDefense = bluntDefValue - bluntAttackValue;
+            var acidSurvivingDefense = acidDefValue - acidAttackValue;
+            var slashSurvivingDefense = slashDefValue - slashAttackValue;
+
+            //check pierce losses
+            var aliveAnts = defender.Amount;
+            if (pierceSurvivingDefense < pierceDefValue)
+            {
+                //beispiel
+                //10 verteidiger mit je 2 schaden
+                //15 verteidiger mit je 2 def
+                //pierfDefValue = 30
+                //pierceSurvivingDefense = 10 (attacker hat 20 schaden)
+                //X = x - ( 30 - ( 10 / 2))
+                //x = x - (ALLE am lebenden - ( überlebende punkte / def = überlebende einheiten))
+
+                //aliveAnts = aliveAnts + (pierceDefValue - (pierceSurvivingDefense / this.Defense.Pierce));
+                aliveAnts = aliveAnts - ((pierceDefValue - pierceSurvivingDefense) / defender.Defense.Pierce);
+            }
+
+            if (bluntSurivingDefense < bluntDefValue)
+            {
+                aliveAnts = aliveAnts - ((bluntDefValue - bluntSurivingDefense) / defender.Defense.Blunt);
+            }
+
+            if (acidSurvivingDefense < acidDefValue)
+            {
+                aliveAnts = aliveAnts - ((acidDefValue - acidSurvivingDefense) / defender.Defense.Acid);
+            }
+
+            if (slashSurvivingDefense < slashDefValue)
+            {
+                aliveAnts = aliveAnts - ((slashDefValue - slashSurvivingDefense) / defender.Defense.Slash);
+            }
+
+            if (aliveAnts > 0)
+                return aliveAnts;
+            else
+                return 0;
+        }
+
+
         /*
         public ColonyResource RecalculateResources(Database db, ColonyResource resources, DateTime startDate, DateTime endDate)
         {

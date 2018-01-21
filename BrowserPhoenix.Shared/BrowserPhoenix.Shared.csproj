@@ -96,8 +96,10 @@
     <Compile Include="Commands\Sync\CreateTroopMovementCommand.cs" />
     <Compile Include="Commands\Sync\LevelUpBuildingCommand.cs" />
     <Compile Include="Commands\Sync\TroopBuildingCommand.cs" />
+    <Compile Include="TroopDefenseValues.cs" />
     <Compile Include="Domain\Troop.cs" />
     <Compile Include="Domain\TroopMovement.cs" />
+    <Compile Include="TroopAttackValues.cs" />
     <Compile Include="TroopStatus.cs" />
     <Compile Include="TroopMovementType.cs" />
     <Compile Include="TroopCollection.cs" />

@@ -165,10 +165,230 @@ namespace BrowserPhoenix.Shared
 
         }
 
+        public static TroopAttackValues GetAttack(Troop troop)
+        {
+            var result = new TroopAttackValues();
+
+        
+            switch (troop.Type)
+            {
+                case TroopType.Worker:
+                    result.Pierce = 2;
+                    result.Blunt = 2;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.BullAnt:
+                    result.Pierce = 0;
+                    result.Blunt = 50;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.FireAnt:
+                    result.Pierce = 0;
+                    result.Blunt = 0;
+                    result.Acid = 20;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.Hunter:
+                    result.Pierce = 20;
+                    result.Blunt = 0;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.Warrior:
+                    result.Pierce =0 ;
+                    result.Blunt = 10;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.Nemesis:
+                    result.Pierce = 0;
+                    result.Blunt = 50;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.Reaper:
+                    result.Pierce = 0;
+                    result.Blunt = 0;
+                    result.Acid = 0;
+                    result.Slash = 30;
+
+                    break;
+
+                case TroopType.Marksman:
+                    result.Pierce = 4;
+                    result.Blunt = 0;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.SwarmGuard:
+                    result.Pierce = 0;
+                    result.Blunt = 0;
+                    result.Acid = 8;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.HeavyWarrior:
+                    result.Pierce = 0;
+                    result.Blunt = 2;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+                case TroopType.TowerGuard:
+                    result.Pierce = 0;
+                    result.Blunt = 0;
+                    result.Acid = 0;
+                    result.Slash = 4;
+                    break;
+
+                case TroopType.Guard:
+                    result.Pierce = 0;
+                    result.Blunt = 3;
+                    result.Acid = 0;
+                    result.Slash = 0;
+
+                    break;
+
+            }
+
+            return result;
+        }
+
+        public static TroopDefenseValues GetDefense(Troop troop)
+        {
+            var result = new TroopDefenseValues();
+
+
+            switch (troop.Type)
+            {
+                case TroopType.Worker:
+                    result.Pierce = 2;
+                    result.Blunt = 2;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.BullAnt:
+                    result.Pierce = 2;
+                    result.Blunt = 4;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.FireAnt:
+                    result.Pierce = 2;
+                    result.Blunt = 2;
+                    result.Acid = 20;
+                    result.Slash = 3;
+
+                    break;
+
+                case TroopType.Hunter:
+                    result.Pierce = 3;
+                    result.Blunt = 2;
+                    result.Acid = 5;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.Warrior:
+                    result.Pierce = 3;
+                    result.Blunt = 3;
+                    result.Acid = 3;
+                    result.Slash = 3;
+
+                    break;
+
+                case TroopType.Nemesis:
+                    result.Pierce = 2;
+                    result.Blunt = 4;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.Reaper:
+                    result.Pierce = 3;
+                    result.Blunt = 3;
+                    result.Acid = 3;
+                    result.Slash = 3;
+
+                    break;
+
+                case TroopType.Marksman:
+                    result.Pierce = 20;
+                    result.Blunt = 2;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.SwarmGuard:
+                    result.Pierce = 2;
+                    result.Blunt = 2;
+                    result.Acid = 75;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.HeavyWarrior:
+                    result.Pierce = 2;
+                    result.Blunt = 10;
+                    result.Acid = 2;
+                    result.Slash = 2;
+
+                    break;
+
+                case TroopType.TowerGuard:
+                    result.Pierce = 3;
+                    result.Blunt = 3;
+                    result.Acid = 3;
+                    result.Slash = 15;
+                    break;
+
+                case TroopType.Guard:
+                    result.Pierce = 10;
+                    result.Blunt = 40;
+                    result.Acid = 10;
+                    result.Slash = 10;
+
+                    break;
+
+            }
+
+            return result;
+        }
+
         public static TimeSpan GetMoveTime(IEnumerable<Troop> troops, Int32 startX, Int32 startY, Int32 targetX, Int32 targetY)
         {
             //placeholder
-            return new TimeSpan(0, 8, 30);
+            var distance = Math.Sqrt((Math.Pow(startX - startY, 2) + Math.Pow(targetX - targetY, 2)));
+
+            var distanceInTime = 600 * distance;
+
+            return new TimeSpan(0, 0, Int32.Parse(distanceInTime.ToString()));
+
+         //   return new TimeSpan(0, 1, 15);
         }
 
         public static float GetMultiplikator(Int32 level, float percentage)
@@ -182,6 +402,45 @@ namespace BrowserPhoenix.Shared
                 multiplikator = percentage;//multiplikator * percentage;
             }
             return multiplikator;
+        }
+
+        //sehr sicher noch änderungen bezüglich colony usw
+        //wall z.b.
+        public static Tuple<IEnumerable<Troop>, IEnumerable<Troop>> Fight(IEnumerable<Troop> defender, IEnumerable<Troop> attacker)
+        {
+            var attackingsTroops = attacker.ToArray();
+            var defendingTroops = defender.ToArray();
+            
+            var currentAttackerGroup = 0;
+
+            foreach(var defendingAnt in defendingTroops)
+            {
+
+                var maxCount = 10;
+                var count = 0;
+                var survivingDefenderAmount = defendingAnt.Amount;
+                while (survivingDefenderAmount > 0 && count < maxCount)
+                {
+                    count++;
+                    if (count > attackingsTroops.Length)
+                        continue;
+
+                    var attackingAnt = attackingsTroops[currentAttackerGroup];
+
+                    var survivingAttackAmount = attackingAnt.CalculateSurvivorAgainst(defendingAnt);
+                    var defendingSurvivorAmountTemp = defendingAnt.CalculateSurvivorAgainst(attackingAnt);
+                    if (survivingAttackAmount == 0)
+                        currentAttackerGroup++;
+
+                    attackingAnt.Amount = survivingAttackAmount;
+                    defendingAnt.Amount = defendingSurvivorAmountTemp;
+                    survivingDefenderAmount = defendingSurvivorAmountTemp;
+                }
+
+            }
+            
+
+            return new Tuple<IEnumerable<Troop>, IEnumerable<Troop>>(defendingTroops, attackingsTroops);
         }
     }
 }

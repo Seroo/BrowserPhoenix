@@ -194,12 +194,12 @@ namespace BrowserPhoenix.Shared.Domain
 
         }
 
-        public void ReturnMovingTroop(Database db, IEnumerable <Troop> troops)
+        public void ReturnMovingTroop(Database db, IEnumerable<Troop> troops)
         {
             foreach (var troop in troops)
             {
                 var inactiveTroop = Troop.GetInactiveTroopByType(db, this.Id, troop.Type);
-                if(inactiveTroop == null)
+                if (inactiveTroop == null)
                 {
                     //WTF!= jemand hat gecheatet!!!
                     var testpoint = "";
@@ -212,7 +212,14 @@ namespace BrowserPhoenix.Shared.Domain
             }
         }
 
-
+        public void SetSurvivingTroops(Database db, IEnumerable<Troop> troops)
+        {
+            foreach(var troop in troops)
+            {
+                db.Save(troop);
+            }
+            //TODO
+        }
     }
 
 }

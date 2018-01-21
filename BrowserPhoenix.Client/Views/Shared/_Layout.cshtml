@@ -40,9 +40,9 @@
     <div class="container body-content">
         @if (!Player.Current.IsAnonymous)
         {
-            <div id="top-menu">
-                @Html.Partial("TopMenu")
-            </div>
+            @Html.Partial("TopResourceMenu")
+
+            @Html.Partial("TopMovementMenu")
         }
         
         <div id="main-menu">

@@ -1,0 +1,53 @@
+﻿
+<style>
+    .resource_category {width:100px; float:left; margin:0px 15px;}
+</style>
+
+<div class="top-menu" id="top-resource-menu">
+    <div style="width: 180px; margin-right:10px; float:left;height:100%; padding-left: 20px; padding-right:20px; padding-top: 5px; font-size:20px">
+        @Player.Current.Colony.Name
+    </div>
+
+    <div style="float:left;">
+
+        @{
+            var colony = Player.Current.Colony;
+            var resources = colony.Resources;
+        }
+
+
+        @ResourceCategory(ResourceType.Larvae, resources, resources.Larvae, resources.LarvaeProduction)
+        @ResourceCategory(ResourceType.Food, resources, resources.Food, resources.FoodProduction)
+        @ResourceCategory(ResourceType.Leave, resources, resources.Leave, resources.LeaveProduction)
+        @ResourceCategory(ResourceType.Sand, resources, resources.Sand, resources.SandProduction)
+        @ResourceCategory(ResourceType.Sugar, resources, resources.Sugar, resources.SugarProduction)
+        @ResourceCategory(ResourceType.Chitin, resources, resources.Chitin, resources.ChitinProduction)
+
+        <div style="clear:both;"></div>
+    </div>
+    <div style="float:left;">
+        <a href="/colony/refreshresources/@Player.Current.Colony.Id">Refresh</a>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+
+@helper ResourceCategory(ResourceType type, ColonyResource resources, float stored, float production)
+{
+<div class="resource_category">
+    <div style="float:left;">
+        <img title="@type.ToString()" src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />
+    </div>
+    <div id="stored-@type" stored="@stored" style="text-align: right;float:right;font-weight:bold;">
+        @Math.Floor(stored)
+    </div>
+    <div style="clear:both;"></div>
+
+    <div style="float:left;">
+        <img title="@type.ToString() Production" src="~/Content/Images/Resources/resource-@(type + ".png")" class="glyph-icon" />+
+    </div>
+    <div id="production-@type" class="production" stored="@stored" type="@type" production="@resources.GetProductionPerTenSeconds(type)" style="text-align: right;float:right;font-weight:bold;">
+        @Math.Floor(production)
+    </div>
+</div>
+}

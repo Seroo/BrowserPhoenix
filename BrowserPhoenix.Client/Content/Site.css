@@ -74,7 +74,7 @@ body {
     font-size: 30px;
 }
 
-#top-menu {
+.top-menu {
     border-radius: 15px;
     border: 4px groove;
     margin-bottom:10px;
@@ -138,4 +138,9 @@ body {
 
 .building-icon, .level-icon {
     float: left;
+}
+
+#top-movement-menu table
+{
+    
 }

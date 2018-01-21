@@ -23,7 +23,7 @@ namespace BrowserPhoenix.Client.Controllers
         {
             using (var db = DatabasePortal.Open())
             {
-                var troops = Troop.GetInactiveTroopsByColony(db, Player.Current.Colony.Id);// Troop.Get GetByColonyId(db, Player.Current.Colony.Id, true);
+                var troops = Troop.GetInactiveTroopCollectionByColony(db, Player.Current.Colony.Id);// Troop.Get GetByColonyId(db, Player.Current.Colony.Id, true);
                                             
                 var result = new BroodLairModel();
                 result.Troops = troops;

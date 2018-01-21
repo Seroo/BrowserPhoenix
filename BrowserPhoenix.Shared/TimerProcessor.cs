@@ -91,10 +91,11 @@ namespace BrowserPhoenix.Shared
                             var attackCommand = new CalculateFightCommand();
                             attackCommand.TroopIds = movement.Troops;
                             attackCommand.FightX = movement.TargetX;
-                            attackCommand.FightX = movement.TargetY;
+                            attackCommand.FightY = movement.TargetY;
                             attackCommand.ReturnX = movement.StartX;
                             attackCommand.ReturnY = movement.StartY;
                             attackCommand.PlayerId = movement.PlayerId;
+                            attackCommand.CreateDate = DateTime.Now;
                             CommandPortal.Send(attackCommand);
 
                             db.Delete(movement);
@@ -114,7 +115,6 @@ namespace BrowserPhoenix.Shared
                             returnCommand.XCord = movement.TargetX;
                             returnCommand.YCord = movement.TargetY;
                             returnCommand.PlayerId = movement.PlayerId;
-
                             CommandPortal.Send(returnCommand);
                             db.Delete(movement);
                             break;

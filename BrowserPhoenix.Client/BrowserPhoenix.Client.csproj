@@ -216,6 +216,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ActiveMovementModel.cs" />
     <Compile Include="Models\AttackModel.cs" />
     <Compile Include="Models\ColonyCellModel.cs" />
     <Compile Include="Models\BroodLairModel.cs" />
@@ -339,12 +340,13 @@
     <Content Include="Views\Shared\MainMenuEng.cshtml" />
     <Content Include="Views\Ranking\Index.cshtml" />
     <Content Include="Views\Map\Index.cshtml" />
-    <Content Include="Views\Shared\TopMenu.cshtml" />
+    <Content Include="Views\Shared\TopResourceMenu.cshtml" />
     <Content Include="Views\Building\BroodLair.cshtml" />
     <Content Include="Views\Colony\CellBuilding.cshtml" />
     <Content Include="Views\Colony\CellEmpty.cshtml" />
     <Content Include="Views\Troop\Attack.cshtml" />
     <Content Include="Views\Movement\Index.cshtml" />
+    <Content Include="Views\Shared\TopMovementMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
