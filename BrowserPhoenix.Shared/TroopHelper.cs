@@ -384,7 +384,7 @@ namespace BrowserPhoenix.Shared
             //placeholder
             var distance = Math.Sqrt((Math.Pow(startX - startY, 2) + Math.Pow(targetX - targetY, 2)));
 
-            var distanceInTime = 600 * distance;
+            var distanceInTime = 10 * distance;
 
             return new TimeSpan(0, 0, Int32.Parse(distanceInTime.ToString()));
 
@@ -406,26 +406,29 @@ namespace BrowserPhoenix.Shared
 
         //sehr sicher noch änderungen bezüglich colony usw
         //wall z.b.
-        public static Tuple<IEnumerable<Troop>, IEnumerable<Troop>> Fight(IEnumerable<Troop> defender, IEnumerable<Troop> attacker)
+        public static Tuple<IEnumerable<Troop>, IEnumerable<Troop>, BattleReport> Fight(IEnumerable<Troop> defender, IEnumerable<Troop> attacker, BattleReport report)
         {
             var attackingsTroops = attacker.ToArray();
             var defendingTroops = defender.ToArray();
             
             var currentAttackerGroup = 0;
-
-            foreach(var defendingAnt in defendingTroops)
+            
+            foreach (var defendingAnt in defendingTroops)
             {
-
                 var maxCount = 10;
                 var count = 0;
                 var survivingDefenderAmount = defendingAnt.Amount;
                 while (survivingDefenderAmount > 0 && count < maxCount)
                 {
                     count++;
-                    if (count > attackingsTroops.Length)
+                    if (currentAttackerGroup >= attackingsTroops.Length)
                         continue;
 
                     var attackingAnt = attackingsTroops[currentAttackerGroup];
+
+                    var attackerStartAmount = attackingAnt.Amount;
+                    var defenderStartAmount = defendingAnt.Amount;
+                    
 
                     var survivingAttackAmount = attackingAnt.CalculateSurvivorAgainst(defendingAnt);
                     var defendingSurvivorAmountTemp = defendingAnt.CalculateSurvivorAgainst(attackingAnt);
@@ -435,12 +438,14 @@ namespace BrowserPhoenix.Shared
                     attackingAnt.Amount = survivingAttackAmount;
                     defendingAnt.Amount = defendingSurvivorAmountTemp;
                     survivingDefenderAmount = defendingSurvivorAmountTemp;
+
+
+                    report = report.AddRound(count, attackingAnt.Type, attackerStartAmount, survivingAttackAmount, defendingAnt.Type, defenderStartAmount, defendingSurvivorAmountTemp);
                 }
 
             }
-            
 
-            return new Tuple<IEnumerable<Troop>, IEnumerable<Troop>>(defendingTroops, attackingsTroops);
+            return new Tuple<IEnumerable<Troop>, IEnumerable<Troop>, BattleReport>(defendingTroops, attackingsTroops, report);
         }
     }
 }

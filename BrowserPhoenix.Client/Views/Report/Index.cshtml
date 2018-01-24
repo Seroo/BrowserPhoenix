@@ -1,0 +1,12 @@
+﻿@model IEnumerable<BattleReport>
+
+
+
+<h2>Reports</h2>
+
+@foreach(var report in Model)
+{
+    <a href="/report/detail/@report.Id">@report.CreateDate.ToString()</a>
+    <br />
+}
+

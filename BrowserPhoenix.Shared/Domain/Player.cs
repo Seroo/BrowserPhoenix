@@ -184,6 +184,20 @@ namespace BrowserPhoenix.Shared.Domain
             this.Score = score;
             db.Save(this);
         }
+
+        public static Player GetById(Database db, Int64 id)
+        {
+            var playerList = db.Fetch<Player>(
+                    Sql.Builder
+                    .Append("SELECT * FROM Player ")
+                    .Append("WHERE player.id =@0 ", id)
+                    );
+
+            if (playerList.Any())
+                return playerList.First();
+            else
+                return null;
+        }
     }
 
 }

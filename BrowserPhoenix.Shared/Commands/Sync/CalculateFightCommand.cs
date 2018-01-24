@@ -14,7 +14,7 @@ namespace BrowserPhoenix.Shared.Commands.Sync
         public Int32 FightX { get; set; }
         public Int32 FightY { get; set; }
         public Int64[] TroopIds {get;set;}
-        
+     
 
         public void Process()
         {
@@ -22,8 +22,9 @@ namespace BrowserPhoenix.Shared.Commands.Sync
             {
                 try
                 {
-
-                    var ownTroops = Troop.GetByIds(db, TroopIds);
+                    
+                    var attackerTroops = Troop.GetByIds(db, TroopIds);
+                    var attackerId = PlayerId;
 
 
                     //checken was an x y ist?
@@ -31,14 +32,18 @@ namespace BrowserPhoenix.Shared.Commands.Sync
 
 
                     var colony = Colony.GetByCoordinates(db, FightX, FightY);
+                    var defenderId = colony.PlayerId;
 
 
-
-                    var enemyTroops = Troop.GetInactiveTroopsByColony(db, colony.Id);
+                    var defenderTroops = Troop.GetInactiveTroopsByColony(db, colony.Id);
 
                     //jetzt die frage wegen der reihenfolge in der die truppen angreifen und wo das abgespeichert werden soll
 
-                    var fightResult = TroopHelper.Fight(enemyTroops, ownTroops);
+
+                    var battleReport = BattleReport.Create(db, attackerId, defenderId, colony.Id, CreateDate);
+
+                    
+                    var fightResult = TroopHelper.Fight(defenderTroops, attackerTroops, battleReport);
 
                     //datenbank seite mit eintragen wer jetzt wieviele truppen noch hat
                     colony.SetSurvivingTroops(db, fightResult.Item1);
@@ -46,8 +51,13 @@ namespace BrowserPhoenix.Shared.Commands.Sync
                     //check was für ein gegner sich an den koordinaten überhaupt befindet
                     //fight kram
                     var returningTroops = fightResult.Item2;
+
+
+                    db.Save(fightResult.Item3);
                     //und wieder back
                     //(falls noch welche da sind)
+
+
 
                     if(returningTroops.Count(x => x.Amount > 0) > 0)
                     {

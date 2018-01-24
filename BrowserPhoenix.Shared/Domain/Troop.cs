@@ -209,7 +209,7 @@ namespace BrowserPhoenix.Shared.Domain
             if (pierceSurvivingDefense < pierceDefValue)
             {
                 //beispiel
-                //10 verteidiger mit je 2 schaden
+                //10 attacker mit je 2 schaden
                 //15 verteidiger mit je 2 def
                 //pierfDefValue = 30
                 //pierceSurvivingDefense = 10 (attacker hat 20 schaden)

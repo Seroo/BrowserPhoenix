@@ -347,12 +347,13 @@
     <Content Include="Views\Troop\Attack.cshtml" />
     <Content Include="Views\Movement\Index.cshtml" />
     <Content Include="Views\Shared\TopMovementMenu.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Forum\" />
     <Folder Include="Views\Profil\" />
-    <Folder Include="Views\Report\" />
     <Folder Include="Views\Research\" />
     <Folder Include="Views\Setting\" />
     <Folder Include="Views\Trade\" />

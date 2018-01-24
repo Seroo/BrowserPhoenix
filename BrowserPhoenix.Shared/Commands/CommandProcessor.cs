@@ -23,7 +23,15 @@ namespace BrowserPhoenix.Shared.Commands
 
         public void ProcessMessage(T type)
         {
-            type.Process();
+            try
+            {
+
+                type.Process();
+            }
+            catch(Exception ex)
+            {
+                var test = "?";
+            }
         }
     }
 }
